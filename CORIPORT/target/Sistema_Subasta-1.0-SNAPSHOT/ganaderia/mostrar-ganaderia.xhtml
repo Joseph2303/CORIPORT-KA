@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{ganaderiaController.loadGanaderias()}"></f:event>
+    </f:metadata>
+    <h:head>
+        <title>Sistema de Subastas</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+        <h:outputStylesheet library="css" name="style.css"/>
+
+
+    </h:head>
+    <h:body>
+        <div id="wrapper" style="width:95%;margin: 0 auto;">
+            <div class="encabezado"> <!--ENCABEZADOS -->
+                <div>
+                    <div> <!--logo de la U -->
+
+                    </div>
+                    <div> <!-- Titulo de sistema -->
+                        <h2>Sistema de subastas</h2>
+                    </div>
+                </div>
+            </div>
+            <div> <!--MENU -->
+                <h:form>
+                    <p:menubar>
+                        <p:submenu label="Administracion de Ganaderias">
+                            <p:menuitem value="Registrar Ganaderia" action="/ganaderia/agregar-ganaderia"/>
+                            <p:menuitem value="Ver ganaderias" action="/ganaderia/mostrar-ganaderia"/>
+                        </p:submenu>
+                    </p:menubar>
+                </h:form>
+            </div>
+            <div> <!--CUERPO-CONTENIDO -->
+                <h:messages globalOnly="true"/>
+                <p:dataTable id="table" value="#{ganaderiaController.ganaderias}" var="temp">
+                    <p:column headerText="ID">
+                        <h:outputText value="#{temp.id}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{temp.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Dueño">
+                        <h:outputText value="#{temp.dueno}"/>
+                    </p:column>
+                    <p:column headerText="Telefono">
+                        <h:outputText value="#{temp.telefono}"/>
+                    </p:column>
+                    <p:column headerText="Correo">
+                        <h:outputText value="#{temp.correo}"/>
+                    </p:column>
+
+                    <p:column headerText="Fierro">
+                        <h:graphicImage library="imagenes" name="#{temp.nombreFoto}" width="120px" height="100px"/>
+                    </p:column>
+                    <p:column headerText="Nombre de la imagen">
+                        <h:outputText value="#{temp.nombreFoto}"/>
+                    </p:column>
+                    <p:column headerText="Acción">
+                        <h:form id="actionForm">
+                            <p:linkButton icon="pi pi-pencil" styleClass="edit-button rounded-button ui-button-success"
+                                          outcome="modificar-ganaderia">
+                                <f:param name="id" value="#{temp.id}"/>
+                            </p:linkButton>
+                            <p:linkButton
+                                    icon="pi pi-trash" styleClass="ui-button-danger mr-2"
+                                    outcome="borrar-ganaderia">
+                                <f:param name="id" value="#{temp.id}"/>
+                            </p:linkButton>
+                        </h:form>
+                    </p:column>
+                </p:dataTable>
+            </div>
+            <div class="pie"> <!--PIE -->
+                <hr/>
+                <p>Todos los derechos reservados 2022</p>
+
+                <p:commandButton value="Acerca de..." type="label" onclick="PF('dlg1').show()"/>
+                <p:dialog header="Sistema de remesas" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
+                    <p class="m-0">Sistema de remesas</p>
+                    <p class="p-m-1">Andrey Ortiz - Edgar Alvarez - Bryan Rojas</p>
+                    <p class="p-m-1">Vesion 1.0</p>
+                </p:dialog>
+
+            </div>
+        </div>
+    </h:body>
+</f:view>
+</html>

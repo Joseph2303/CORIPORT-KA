@@ -1,0 +1,20 @@
+.ui-form{
+    width: 80%;
+    margin: 0 auto;
+}
+.ui-button{
+    text-decoration: none;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 6px;
+    border: 2px solid lightgrey;
+}
+.red{
+    color: #fff;
+    background-color:#BB2D3B;
+}
+.blue{
+    color: #fff;
+    background-color:#0B5ED7;
+}
