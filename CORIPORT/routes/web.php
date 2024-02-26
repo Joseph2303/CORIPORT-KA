@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\PuestoController;
+use App\Http\Controllers\JustificacionAusenciaController;
+use App\Models\JustificacionAusencia;
 use Illuminate\Support\Facades\Route;
 
 
@@ -59,6 +61,14 @@ Route::prefix('api')->group(
         Route::post('/puesto/store', [PuestoController::class, 'store']);
         Route::put('/puesto/update/{id}', [PuestoController::class, 'update']);
         Route::delete('/puesto/delete/{id}', [PuestoController::class, 'delete']);
+
+
+        // Justificacion de ausencia 
+        Route::get('/justificacionAusencias', [JustificacionAusenciaController::class, 'index']);
+        Route::get('/justificacionAusencia/show/{id}', [JustificacionAusenciaController::class, 'show']);
+        Route::post('/justificacionAusencia/store', [JustificacionAusenciaController::class, 'store']);
+        Route::put('/justificacionAusencia/update/{id}', [JustificacionAusenciaController::class, 'update']);
+        Route::delete('/justificacionAusencia/delete/{id}', [JustificacionAusenciaController::class, 'delete']);
 
     }
 

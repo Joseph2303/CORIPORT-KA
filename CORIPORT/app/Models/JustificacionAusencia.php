@@ -25,6 +25,6 @@ class JustificacionAusencia extends Model
         'NombreEncargado',
         'idEmpleado',
     ];
-
+    
     
 }

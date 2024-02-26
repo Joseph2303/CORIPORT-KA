@@ -42,84 +42,128 @@ class JustificacionAusenciaController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
-
-        $rules = [
-            'fechaSolicitud' => 'required|date',
-            'fechaAusencia' => 'required|date',
-            'archivos' => 'required',
-            'justificacion' => 'required',
-            'estado' => 'required',
-            'descripcion' => 'required',
-            'NombreEncargado' => 'required',
-            'idEmpleado' => 'required|integer',
-        ];
-
-        $valid = validator($data, $rules);
-
-        if (!$valid->fails()) {
-            $justificacionAusencia = JustificacionAusencia::create($data);
-
-            $response = [
-                'status' => 200,
-                'message' => 'Datos guardados exitosamente',
-                'data' => $justificacionAusencia,
-            ];
-        } else {
-            $response = [
-                'status' => 406,
-                'message' => 'Error en la validación de los datos',
-                'errors' => $valid->errors(),
-            ];
-        }
-
-        return response()->json($response, $response['status']);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $data = $request->all();
-
-        $rules = [
-            'fechaSolicitud' => 'required|date',
-            'fechaAusencia' => 'required|date',
-            'archivos' => 'required', 
-            'justificacion' => 'required',
-            'estado' => 'required',
-            'descripcion' => 'required',
-            'NombreEncargado' => 'required',
-            'idEmpleado' => 'required|integer',
-        ];
-
-        $valid = validator($data, $rules);
-
-        if ($valid->fails()) {
-            $response = [
-                'status' => 406,
-                'message' => 'Datos enviados no cumplen con las reglas establecidas',
-                'errors' => $valid->errors(),
-            ];
-        } else {
-            $justificacionAusencia = JustificacionAusencia::find($id);
-
-            if ($justificacionAusencia) {
-                $justificacionAusencia->update($data);
-                
-                $response = [
-                    'status' => 200,
-                    'message' => 'Datos actualizados satisfactoriamente',
-                    'data' => $justificacionAusencia,
+        try {
+            $dataInput = $request->input('data', null);
+            $data = json_decode($dataInput, true);
+    
+            if (!empty($data)) {
+                $data = array_map('trim', $data);
+                $rules = [
+                    'fechaSolicitud' => 'required|date',
+                    'fechaAusencia' => 'required|date',
+                    'archivos' => 'required',
+                    'justificacion' => 'required',
+                    'estado' => 'required',
+                    'descripcion' => 'required',
+                    'NombreEncargado' => 'required',
+                    'idEmpleado' => 'required|integer',
                 ];
+    
+                $valid = \validator($data, $rules);
+    
+                if (!$valid->fails()) {
+                    $justificacionAusencia = JustificacionAusencia::create($data);
+    
+                    $response = [
+                        'status' => 200,
+                        'message' => 'Datos guardados exitosamente',
+                        'data' => $justificacionAusencia,
+                    ];
+                } else {
+                    $response = [
+                        'status' => 406,
+                        'message' => 'Error en la validación de los datos',
+                        'errors' => $valid->errors(),
+                    ];
+                }
             } else {
                 $response = [
-                    'status' => 400,
-                    'message' => 'No se pudo actualizar la justificación de ausencia, puede ser que no exista',
+                    'status' => 406,
+                    'message' => 'Datos requeridos',
                 ];
             }
+        } catch (\Exception $e) {
+            $response = [
+                'status' => 500,
+                'message' => 'Error al guardar los datos',
+                'error' => $e->getMessage(),
+            ];
         }
-
+    
         return response()->json($response, $response['status']);
     }
+    
+
+    public function update(Request $request, $id)
+{
+    try {
+        $dataInput = $request->input('data', null);
+        $data = json_decode($dataInput, true);
+
+        if (empty($data)) {
+            $response = [
+                'status' => 400,
+                'message' => 'Datos no proporcionados o incorrectos',
+            ];
+        } else {
+            $data = array_map('trim', $data);
+
+            $rules = [
+                'fechaSolicitud' => 'required|date',
+                'fechaAusencia' => 'required|date',
+                'archivos' => 'required',
+                'justificacion' => 'required',
+                'estado' => 'required',
+                'descripcion' => 'required',
+                'NombreEncargado' => 'required',
+                'idEmpleado' => 'required|integer',
+            ];
+
+            $valid = \validator($data, $rules);
+
+            if ($valid->fails()) {
+                $response = [
+                    'status' => 406,
+                    'message' => 'Datos enviados no cumplen con las reglas establecidas',
+                    'errors' => $valid->errors(),
+                ];
+            } else {
+                if (!empty($id)) {
+                    $justificacionAusencia = JustificacionAusencia::find($id);
+
+                    if ($justificacionAusencia) {
+                        $justificacionAusencia->update($data);
+
+                        $response = [
+                            'status' => 200,
+                            'message' => 'Datos actualizados satisfactoriamente',
+                            'data' => $justificacionAusencia,
+                        ];
+                    } else {
+                        $response = [
+                            'status' => 400,
+                            'message' => 'No se pudo actualizar la justificación de ausencia, puede ser que no exista',
+                        ];
+                    }
+                } else {
+                    $response = [
+                        'status' => 400,
+                        'message' => 'El ID de la justificación de ausencia no es válido',
+                    ];
+                }
+            }
+        }
+    } catch (\Exception $e) {
+        $response = [
+            'status' => 500,
+            'message' => 'Error al actualizar los datos',
+            'error' => $e->getMessage(),
+        ];
+    }
+
+    return response()->json($response, $response['status']);
+}
+
 
     public function delete($id)
     {
