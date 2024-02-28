@@ -101,7 +101,6 @@ class EmpleadoController extends Controller
             'telefono2' => 'required|integer',
             'cedula' => 'required',
             'fechContrat' => 'required|date_format:Y-m-d',
-            'idUsuario' => 'required|integer|min:1',
             'idPuesto' => 'required|integer|min:1',
         ];
         $valid = validator($data, $rules);
@@ -122,7 +121,6 @@ class EmpleadoController extends Controller
                 $empleado->telefono2 = $data['telefono2'];
                 $empleado->cedula = $data['cedula'];
                 $empleado->fechContrat = $data['fechContrat'];
-                $empleado->idUsuario = $data['idUsuario'];
                 $empleado->idPuesto = $data['idPuesto'];
                 $empleado->save();
                 $empleado->load('usuario', 'puesto');
