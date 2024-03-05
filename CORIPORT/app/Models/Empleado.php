@@ -40,4 +40,8 @@ class Empleado extends Model
     {
         return $this->hasMany('App\Models\Horario', 'idEmpleado');
     }
+    public function soliVacaciones()
+    {
+        return $this->hasMany('App\Models\soliVacaciones','idEmpleado');
+    }
 }

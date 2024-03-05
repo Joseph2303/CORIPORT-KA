@@ -6,6 +6,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\JustificacionAusenciaController;
+use App\Http\Controllers\soliVacacionesController;
 use App\Models\JustificacionAusencia;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +25,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('api')->group(
     function(){
 
-        //Route user      
+        //Route user     
+        Route::get('/user/comparetokens', [UserController::class, 'compareTokens']); 
         Route::get('/user/getidentity',[UserController::class,'getIdentity']);
         Route::get('/users',[UserController::class,'index']);
         Route::delete('/user/delete/{id}',[UserController::class,'delete']);
@@ -33,6 +35,7 @@ Route::prefix('api')->group(
         Route::put('/user/update/{id}',[UserController::class,'update']);
         Route::get('/userId/{id}',[UserController::class,'getId']);
         Route::get('/user/{email}',[UserController::class,'getUserByEmail']);
+
 
         //Router Empleado
         Route::get('/empleados', [EmpleadoController::class, 'index']);
@@ -65,6 +68,14 @@ Route::prefix('api')->group(
 
         // Justificacion de ausencia 
         Route::get('/justificacionAusencias', [JustificacionAusenciaController::class, 'index']);
+        Route::get('/justificacionAusencia/show/{id}', [JustificacionAusenciaController::class, 'show']);
+        Route::post('/justificacionAusencia/store', [JustificacionAusenciaController::class, 'store']);
+        Route::put('/justificacionAusencia/update/{id}', [JustificacionAusenciaController::class, 'update']);
+        Route::delete('/justificacionAusencia/delete/{id}', [JustificacionAusenciaController::class, 'delete']);
+    
+    
+        // Solicitud de vacaciones
+        Route::get('/soliVacaciones', [soliVacacionesController::class, 'index']);
         Route::get('/justificacionAusencia/show/{id}', [JustificacionAusenciaController::class, 'show']);
         Route::post('/justificacionAusencia/store', [JustificacionAusenciaController::class, 'store']);
         Route::put('/justificacionAusencia/update/{id}', [JustificacionAusenciaController::class, 'update']);

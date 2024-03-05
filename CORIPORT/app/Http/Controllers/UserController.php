@@ -74,7 +74,7 @@ class UserController extends Controller
     {
         $dataInput = $request->input('data', null);
         $data = json_decode($dataInput, true);
-    
+
         if (empty($data)) {
             $response = array(
                 'status' => 400,
@@ -86,9 +86,9 @@ class UserController extends Controller
                 'email' => 'required|email',
                 'tipoUsuario' => 'required',
             ];
-    
+
             $valid = \validator($data, $rules);
-    
+
             if ($valid->fails()) {
                 $response = array(
                     'status' => 406,
@@ -98,11 +98,11 @@ class UserController extends Controller
             } else {
                 if (!empty($id)) {
                     $usuario = Usuario::find($id);
-    
+
                     if ($usuario) {
                         // Actualiza los campos específicos
                         $usuario->update($data);
-    
+
                         $response = array(
                             'status' => 200,
                             'message' => 'Datos actualizados satisfactoriamente',
@@ -121,10 +121,10 @@ class UserController extends Controller
                 }
             }
         }
-    
+
         return response()->json($response, $response['status']);
     }
-    
+
 
 
     public function delete($email)
@@ -161,6 +161,9 @@ class UserController extends Controller
         $valid = \validator($data, $rules);
         if (!$valid->fails()) {
             $response = $jwtAuth->getToken($data['email'], $data['contrasena']);
+            $user=Usuario::where(['email'=>$data['email'], 'contrasena'=>hash('sha256',$data['contrasena'])])->first();      
+            $user->remember_token=$response;
+            $user->save();
             return response()->json($response);
         } else {
             $response = array(
@@ -198,14 +201,42 @@ class UserController extends Controller
     }
 
     public function getUserByEmail($email)
-{
-    $user = Usuario::where('email', $email)->first();
+    {
+        $user = Usuario::where('email', $email)->first();
 
-    if (is_null($user)) {
-        return response()->json(["message" => "Usuario no encontrado con el correo proporcionado"], 404);
-    } else {
-        return response()->json($user, 200);
+        if (is_null($user)) {
+            return response()->json(["message" => "Usuario no encontrado con el correo proporcionado"], 404);
+        } else {
+            return response()->json($user, 200);
+        }
     }
-}
-}
 
+    public function compareTokens(Request $request)
+    {      
+        $localStorageToken = $request->header('beartoken'); // Obtén el token del encabezado de la solicitud
+
+        if(isset($localStorageToken)){
+            $user = Usuario::where(['remember_token'=> $localStorageToken])->first(); // Busca el usuario correspondiente al token en la base de datos
+
+            if ($user) {
+                $response = [
+                    'status' => 200,
+                    'message' => 'Los tokens coinciden'
+                ];
+                
+            } else {
+                $response = [
+                    'status' => 401,
+                    'message' => 'Los tokens no coinciden'
+                ];
+            }
+        }else{
+            $response = [
+                'status' => 401,
+                'message' => 'token no encontrado'
+            ];
+        }
+        return response()->json($response);
+    }
+
+}
