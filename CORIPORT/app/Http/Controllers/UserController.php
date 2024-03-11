@@ -161,9 +161,7 @@ class UserController extends Controller
         $valid = \validator($data, $rules);
         if (!$valid->fails()) {
             $response = $jwtAuth->getToken($data['email'], $data['contrasena']);
-            $user=Usuario::where(['email'=>$data['email'], 'contrasena'=>hash('sha256',$data['contrasena'])])->first();      
-            $user->remember_token=$response;
-            $user->save();
+
             return response()->json($response);
         } else {
             $response = array(

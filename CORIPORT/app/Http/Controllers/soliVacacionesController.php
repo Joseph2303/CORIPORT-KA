@@ -105,12 +105,12 @@ class soliVacacionesController extends Controller
             );
         } else {
             $rules = [
-                'fechSolicitud' => 'required|alpha',
-                'fechInicio' => 'required|alpha',
-                'fechFin' => 'required|alpha',
+                'fechSolicitud' => 'required|date_format:Y-m-d',
+                'fechInicio' => 'required|date_format:Y-m-d',
+                'fechFin' => 'required|date_format:Y-m-d',
                 'estado' => 'required|alpha',
                 'responsableAut' => 'required|alpha',
-                'descripcion'=> 'required|alpha',
+                'descripcion' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'idEmpleado'=> 'required|integer'
             ];
     

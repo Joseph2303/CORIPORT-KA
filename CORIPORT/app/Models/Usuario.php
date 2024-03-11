@@ -52,7 +52,7 @@ class Usuario extends Authenticatable
 
     
     public function empleado(){
-        return $this->hasOne('App\Models\Empleado', 'idEmpleado','idUsuario');
+        return $this->hasOne('App\Models\Empleado', 'idUsuario','idUsuario');
     }
 
 

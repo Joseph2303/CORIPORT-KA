@@ -13,15 +13,19 @@ class JWTAuth{
         $this->key="Esta es mi clave secreta abc123";
     }
     public function getToken($email,$contrasena){
-        $user=Usuario::where(['email'=>$email,
-        'contrasena'=>hash('sha256',$contrasena)])->first();
+        $user = Usuario::where([
+            'email' => $email,
+            'contrasena' => hash('sha256', $contrasena)
+        ])->with('empleado')->first();
 
         if(is_object($user)){
-            $token=array(
+           
+            $token=array(          
                 'iss'=>$user->idUsuario,
                 'email'=>$user->email,
                 'contrasena'=>$user->contrasena,
                 'tipoUsuario'=>$user->tipoUsuario,
+                'empleado' =>  $user->empleado,
                 'iat'=>time(),
                 'exp'=>time()+(2000)
             );

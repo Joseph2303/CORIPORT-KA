@@ -7,7 +7,6 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\JustificacionAusenciaController;
 use App\Http\Controllers\soliVacacionesController;
-use App\Models\JustificacionAusencia;
 use Illuminate\Support\Facades\Route;
 
 
@@ -78,8 +77,8 @@ Route::prefix('api')->group(
         Route::get('/soliVacaciones', [soliVacacionesController::class, 'index']);
         Route::get('/justificacionAusencia/show/{id}', [JustificacionAusenciaController::class, 'show']);
         Route::post('/justificacionAusencia/store', [JustificacionAusenciaController::class, 'store']);
-        Route::put('/justificacionAusencia/update/{id}', [JustificacionAusenciaController::class, 'update']);
-        Route::delete('/justificacionAusencia/delete/{id}', [JustificacionAusenciaController::class, 'delete']);
+        Route::put('/soliVacaciones/update/{id}', [soliVacacionesController::class, 'update']);
+        Route::delete('/justificacionAusencia/delete/{id}', [soliVacacionesController::class, 'delete']);
 
     }
 
