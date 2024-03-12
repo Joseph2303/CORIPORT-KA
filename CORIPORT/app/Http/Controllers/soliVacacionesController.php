@@ -21,8 +21,8 @@ class soliVacacionesController extends Controller
         $data = solicitudVacaciones::all();
         if ($data) {
             $data = solicitudVacaciones::with('empleado', 'empleado.usuario', 'empleado.puesto')
-            ->get();        }
-        
+            ->get();       
+        }
         $response = [
             "status" => 200,
             "message" => "Consulta generada exitosamente",

@@ -14,7 +14,10 @@ class JustificacionAusenciaController extends Controller
     public function index()
     {
         $data = JustificacionAusencia::all();
-        
+        if ($data) {
+            $data = JustificacionAusencia::with('empleado', 'empleado.usuario', 'empleado.puesto')
+            ->get();       
+        }
         $response = [
             "status" => 200,
             "message" => "Consulta generada exitosamente",

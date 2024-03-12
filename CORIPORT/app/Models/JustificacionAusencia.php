@@ -12,7 +12,7 @@ class JustificacionAusencia extends Model
 
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'justificacionAusencia';
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'idJustificacionAusencia'; 
     public $timestamps = false; 
 
     protected $fillable = [
@@ -26,5 +26,8 @@ class JustificacionAusencia extends Model
         'idEmpleado',
     ];
     
-    
+    public function empleado()
+    {
+        return $this->belongsTo('App\Models\Empleado', 'idEmpleado');
+    }
 }
