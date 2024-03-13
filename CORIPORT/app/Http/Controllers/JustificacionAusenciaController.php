@@ -32,6 +32,7 @@ class JustificacionAusenciaController extends Controller
         if (is_object($justificacionAusencia)) {
             $response = [
                 'status' => 200,
+                'message' => 'Consulta generada exitosamente',
                 'data' => $justificacionAusencia,
             ];
         } else {
@@ -58,8 +59,8 @@ class JustificacionAusenciaController extends Controller
                     'justificacion' => 'required',
                     'estado' => 'required',
                     'descripcion' => 'required',
-                    'NombreEncargado' => 'required',
-                    'idEmpleado' => 'required|integer',
+                    'NombreEncargado' => 'required|required|regex:/^[a-zA-Z\s]+$/',
+                    'idEmpleado' => 'required|integer'
                 ];
     
                 $valid = \validator($data, $rules);

@@ -12,15 +12,18 @@ class Horario extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'horario';
-    protected $primaryKey = "id";
+    protected $primaryKey = "idHorario";
     public $timestamps = false;
 
     protected $fillable = [
-        'idMarca',
-        'horaInicio', 'horaFin', 'fecha', 'idEmpleado'
+        'idHorario',
+        'horaInicio', 
+        'horaFin',
+        'fecha',
+        'idEmpleado'
     ];
     public function empleado()
     {
-        return $this->belongsTo('App\Models\Empleado', 'idEmpleado', 'idMarca');
+        return $this->belongsTo('App\Models\Empleado', 'idEmpleado', 'idEmpleado');
     }
 }

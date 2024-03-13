@@ -42,12 +42,12 @@ class soliVacacionesController extends Controller
             if (!empty($data)) {
                 $data = array_map('trim', $data);
                 $rules = [
-                    'fechSolicitud' => 'required|alpha',
-                    'fechInicio' => 'required|alpha',
-                    'fechFin' => 'required|alpha',
-                    'estado' => 'required|alpha',
-                    'responsableAut' => 'required|alpha',
-                    'descripcion'=> 'required|alpha',
+                    'fechSolicitud' => 'required|date',
+                    'fechInicio' => 'required|date',
+                    'fechFin' => 'required|date',
+                    'estado' => 'required',
+                    'responsableAut' => 'required|regex:/^[a-zA-Z\s]+$/',
+                    'descripcion'=> 'required',
                     'idEmpleado'=> 'required|integer'
                 ];
                 $valid = \validator($data, $rules);
@@ -179,16 +179,17 @@ class soliVacacionesController extends Controller
 
     public function show($id)
     {
-        $diaFeriado = solicitudVacaciones::find($id);
-        if (is_object($diaFeriado)) {
+        $solicitud = solicitudVacaciones::find($id);
+        if (is_object($solicitud)) {
             $response = [
                 'status' => 200,
-                'data' => $diaFeriado,
+                'message' => 'Consulta generada exitosamente',
+                'data' => $solicitud,
             ];
         } else {
             $response = [
                 'status' => 404,
-                'message' => 'Dia feriado no encontrado',
+                'message' => 'Solicitud de vacaciones no encontrado',
             ];
         }
         return response()->json($response, $response['status']);

@@ -75,10 +75,10 @@ Route::prefix('api')->group(
     
         // Solicitud de vacaciones
         Route::get('/soliVacaciones', [soliVacacionesController::class, 'index']);
-        Route::get('/justificacionAusencia/show/{id}', [JustificacionAusenciaController::class, 'show']);
-        Route::post('/justificacionAusencia/store', [JustificacionAusenciaController::class, 'store']);
+        Route::get('/soliVacaciones/show/{id}', [soliVacacionesController::class, 'show']);
+        Route::post('/soliVacaciones/store', [soliVacacionesController::class, 'store']);
         Route::put('/soliVacaciones/update/{id}', [soliVacacionesController::class, 'update']);
-        Route::delete('/justificacionAusencia/delete/{id}', [soliVacacionesController::class, 'delete']);
+        Route::delete('/soliVacaciones/delete/{id}', [soliVacacionesController::class, 'delete']);
 
     }
 

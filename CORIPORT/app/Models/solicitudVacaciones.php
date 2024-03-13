@@ -22,7 +22,7 @@ class solicitudVacaciones extends Model
         'estado',
         'responsableAut',
         'descripcion',
-        'idEmpleado',
+        'idEmpleado'
     ];
     public function empleado()
     {

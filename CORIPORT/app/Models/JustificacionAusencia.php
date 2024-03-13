@@ -23,7 +23,7 @@ class JustificacionAusencia extends Model
         'estado',
         'descripcion',
         'NombreEncargado',
-        'idEmpleado',
+        'idEmpleado'
     ];
     
     public function empleado()

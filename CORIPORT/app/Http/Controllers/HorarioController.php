@@ -164,6 +164,7 @@ class HorarioController extends Controller
             $horario->load('empleado');
             $response = [
                 'status' => 200,
+                'message' => 'Consulta generada exitosamente',
                 'data' => $horario,
             ];
         } else {
