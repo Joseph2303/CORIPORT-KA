@@ -16,7 +16,7 @@ class PuestoDeleteTest extends TestCase
 
 
         // Envía una solicitud DELETE para eliminar el puesto recién creado
-        $deleteResponse = $this->json('DELETE', "api/puesto/delete/" . 6+1);
+        $deleteResponse = $this->json('DELETE', "api/puesto/delete/" . 11);
 
         // Verifica que la respuesta de eliminación tenga un código de estado 200
         $deleteResponse->assertStatus(200);
