@@ -11,25 +11,9 @@ class PuestoTest extends TestCase
      *
      * @return void
      */
-    public function test_the_application_returns_a_successful_response()
+    public function test_the_application_returns_a_successful_response_all_puestos()
     {
 
-        $puestoData = [
-            'puesto' => 'Nuevo Puesto',
-        ];
-
-        // Envía una solicitud POST a la ruta de almacenamiento
-        $response = $this->json('POST', 'api/puesto/store', ['data' => json_encode($puestoData)]);
-
-        // Verifica que la respuesta tenga un código de estado 200
-        $response->assertStatus(200);
-
-
-
-
-
-
-        
         $response = $this->get('api/puestos');
 
         $response->assertStatus(200)
@@ -43,6 +27,15 @@ class PuestoTest extends TestCase
                     ],
                 ],
             ]);
-            
+    }
+    public function test_the_application_returns_a_successful_response_store_puesto()
+    {
+        $puestoData = [
+            'puesto' => 'Nuevo Puesto',
+        ];
+
+        $response = $this->json('POST', 'api/puesto/store', ['data' => json_encode($puestoData)]);
+
+        $response->assertStatus(200);
     }
 }
