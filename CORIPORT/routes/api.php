@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 
 //Usuario
+/*
 Route::get('usuario', function(){
     return usuario::all();});
 
@@ -59,3 +60,4 @@ Route::put('raza/{id}', function(Request $request, $id){
 Route::delete('raza/{id}', function($id){
     raza::find($id)->delete();
     return 204;});
+    * */
