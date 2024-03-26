@@ -23,11 +23,10 @@ class JustificacionAusencia extends Model
         'estado',
         'descripcion',
         'NombreEncargado',
-        'idEmpleado'
     ];
     
-    public function empleado()
+    public function registroAusencia()
     {
-        return $this->belongsTo('App\Models\Empleado', 'idEmpleado');
+        return $this->hasOne('App\Models\RegistroAusencia', 'idJustificacionAusencia', 'idJustificacionAusencia');
     }
 }

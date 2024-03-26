@@ -48,4 +48,8 @@ class Empleado extends Model
     {
         return $this->hasMany('App\Models\JustificacionAusencia','idEmpleado');
     }
+    public function registroAusencia()
+    {
+        return $this->hasMany('App\Models\RegistroAusencia','idEmpleado');
+    }
 }

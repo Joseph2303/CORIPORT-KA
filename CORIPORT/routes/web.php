@@ -6,6 +6,8 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\JustificacionAusenciaController;
+use App\Http\Controllers\RegistroAusenciaController;
+use App\Http\Controllers\RegistroTardiaController;
 use App\Http\Controllers\soliVacacionesController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,18 +24,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('api')->group(
-    function(){
+    function () {
 
         //Route user     
-        Route::get('/user/comparetokens', [UserController::class, 'compareTokens']); 
-        Route::get('/user/getidentity',[UserController::class,'getIdentity']);
-        Route::get('/users',[UserController::class,'index']);
-        Route::delete('/user/delete/{id}',[UserController::class,'delete']);
-        Route::post('/user/login',[UserController::class,'login']);
-        Route::post('/user/store',[UserController::class,'store']);
-        Route::put('/user/update/{id}',[UserController::class,'update']);
-        Route::get('/userId/{id}',[UserController::class,'getId']);
-        Route::get('/user/{email}',[UserController::class,'getUserByEmail']);
+        Route::get('/user/comparetokens', [UserController::class, 'compareTokens']);
+        Route::get('/user/getidentity', [UserController::class, 'getIdentity']);
+        Route::get('/users', [UserController::class, 'index']);
+        Route::delete('/user/delete/{id}', [UserController::class, 'delete']);
+        Route::post('/user/login', [UserController::class, 'login']);
+        Route::post('/user/store', [UserController::class, 'store']);
+        Route::put('/user/update/{id}', [UserController::class, 'update']);
+        Route::get('/userId/{id}', [UserController::class, 'getId']);
+        Route::get('/user/{email}', [UserController::class, 'getUserByEmail']);
 
 
         //Router Empleado
@@ -71,8 +73,8 @@ Route::prefix('api')->group(
         Route::post('/justificacionAusencia/store', [JustificacionAusenciaController::class, 'store']);
         Route::put('/justificacionAusencia/update/{id}', [JustificacionAusenciaController::class, 'update']);
         Route::delete('/justificacionAusencia/delete/{id}', [JustificacionAusenciaController::class, 'delete']);
-    
-    
+
+
         // Solicitud de vacaciones
         Route::get('/soliVacaciones', [soliVacacionesController::class, 'index']);
         Route::get('/soliVacaciones/show/{id}', [soliVacacionesController::class, 'show']);
@@ -80,6 +82,19 @@ Route::prefix('api')->group(
         Route::put('/soliVacaciones/update/{id}', [soliVacacionesController::class, 'update']);
         Route::delete('/soliVacaciones/delete/{id}', [soliVacacionesController::class, 'delete']);
 
+        // Registro de ausencias
+        Route::get('/registroAusencias', [RegistroAusenciaController::class, 'index']);
+        Route::get('/registroAusencia/show/{id}', [RegistroAusenciaController::class, 'show']);
+        Route::post('/registroAusencia/store', [RegistroAusenciaController::class, 'store']);
+        Route::put('/registroAusencia/update/{id}', [RegistroAusenciaController::class, 'update']);
+        Route::delete('/registroAusencia/delete/{id}', [RegistroAusenciaController::class, 'delete']);
+
+        // Registro de tardias
+        Route::get('/registroTardias', [RegistroTardiaController::class, 'index']);
+        Route::get('/registroTardia/show/{id}', [RegistroTardiaController::class, 'show']);
+        Route::post('/registroTardia/store', [RegistroTardiaController::class, 'store']);
+        Route::put('/registroTardia/update/{id}', [RegistroTardiaController::class, 'update']);
+        Route::delete('/registroTardia/delete/{id}', [RegistroTardiaController::class, 'delete']);
     }
 
 );

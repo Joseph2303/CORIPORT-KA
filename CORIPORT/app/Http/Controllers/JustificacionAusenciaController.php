@@ -13,18 +13,33 @@ class JustificacionAusenciaController extends Controller
 
     public function index()
     {
+        // Recuperar todas las justificaciones de ausencia
         $data = JustificacionAusencia::all();
-        if ($data) {
-            $data = JustificacionAusencia::with('empleado', 'empleado.usuario', 'empleado.puesto')
-            ->get();       
+    
+        // Verificar si se encontraron datos
+        if ($data->isEmpty()) {
+            $response = [
+                "status" => 404,
+                "message" => "No se encontraron justificaciones de ausencia",
+                "data" => [],
+            ];
+        } else {
+            // Cargar relaciones relacionadas con los registros de ausencia,
+            // empleados, usuarios y puestos
+            $data->load('registroAusencia', 'registroAusencia.empleado', 'registroAusencia.empleado.usuario', 'registroAusencia.empleado.puesto');
+    
+            // Preparar la respuesta
+            $response = [
+                "status" => 200,
+                "message" => "Consulta generada exitosamente",
+                "data" => $data,
+            ];
         }
-        $response = [
-            "status" => 200,
-            "message" => "Consulta generada exitosamente",
-            "data" => $data,
-        ];
-        return response()->json($response, 200);
+    
+        // Devolver la respuesta en formato JSON
+        return response()->json($response);
     }
+    
 
     public function show($id)
     {
