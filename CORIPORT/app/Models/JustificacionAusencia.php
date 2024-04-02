@@ -18,11 +18,11 @@ class JustificacionAusencia extends Model
     protected $fillable = [
         'fechaSolicitud',
         'fechaAusencia',
-        'archivos',
+        'archivo',
         'justificacion',
         'estado',
         'descripcion',
-        'NombreEncargado',
+        'encargado',
     ];
     
     public function registroAusencia()

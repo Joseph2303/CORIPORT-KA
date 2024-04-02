@@ -70,11 +70,11 @@ class JustificacionAusenciaController extends Controller
                 $rules = [
                     'fechaSolicitud' => 'required|date',
                     'fechaAusencia' => 'required|date',
-                    'archivos' => 'required',
+                    'archivo' => 'required',
                     'justificacion' => 'required',
                     'estado' => 'required',
                     'descripcion' => 'required',
-                    'NombreEncargado' => 'required|required|regex:/^[a-zA-Z\s]+$/',
+                    'encargado' => 'required|required|regex:/^[a-zA-Z\s]+$/',
                     'idEmpleado' => 'required|integer'
                 ];
     
@@ -130,11 +130,11 @@ class JustificacionAusenciaController extends Controller
             $rules = [
                 'fechaSolicitud' => 'required|date',
                 'fechaAusencia' => 'required|date',
-                'archivos' => 'required',
+                'archivo' => 'required',
                 'justificacion' => 'required',
                 'estado' => 'required',
                 'descripcion' => 'required',
-                'NombreEncargado' => 'required',
+                'encargado' => 'required',
                 'idEmpleado' => 'required|integer',
             ];
 
