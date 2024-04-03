@@ -19,7 +19,7 @@ class RegistroTardia extends Model
         'idResgistroTardia',
         'fecha',
         'hora',
-        'idJustificacionAusencia',
+        'idJustificacionTardia',
         'idEmpleado'
     ];
     
@@ -28,9 +28,9 @@ class RegistroTardia extends Model
         return $this->belongsTo('App\Models\Empleado', 'idEmpleado', 'idEmpleado');
     }
     
-    public function justificacionAusencia()
+    public function justificacionTardia()
     {
-        return $this->belongsTo('App\Models\JustificacionAusencia', 'idJustificacionAusencia', 'idJustificacionAusencia');
+        return $this->belongsTo('App\Models\JustificacionTardia', 'idJustificacionTardia', 'idJustificacionTardia');
     }
     
 }

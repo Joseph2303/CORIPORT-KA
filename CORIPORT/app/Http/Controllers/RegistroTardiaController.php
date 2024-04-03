@@ -20,13 +20,13 @@ class RegistroTardiaController extends Controller{
         if ($data->isEmpty()) {
             $response = [
                 "status" => 404,
-                "message" => "No se encontraron justificaciones de ausencia",
+                "message" => "No se encontraron justificaciones de tardia",
                 "data" => [],
             ];
         } else {
             // Cargar relaciones relacionadas con los registros de ausencia,
             // empleados, usuarios y puestos
-            $data->load('empleado', 'justificacionAusencia');
+            $data->load('empleado','empleado.usuario', 'empleado.puesto', 'justificacionTardia');
     
             // Preparar la respuesta
             $response = [

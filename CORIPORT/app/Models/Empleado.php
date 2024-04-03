@@ -44,10 +44,6 @@ class Empleado extends Model
     {
         return $this->hasMany('App\Models\soliVacaciones','idEmpleado');
     }
-    public function justificacionAusencia()
-    {
-        return $this->hasMany('App\Models\JustificacionAusencia','idEmpleado');
-    }
     public function registroAusencia()
     {
         return $this->hasMany('App\Models\RegistroAusencia','idEmpleado');
