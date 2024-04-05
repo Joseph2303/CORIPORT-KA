@@ -6,9 +6,11 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\JustificacionAusenciaController;
+use App\Http\Controllers\JustificacionTardiaController;
 use App\Http\Controllers\RegistroAusenciaController;
 use App\Http\Controllers\RegistroTardiaController;
 use App\Http\Controllers\soliVacacionesController;
+use App\Models\JustificacionTardia;
 use Illuminate\Support\Facades\Route;
 
 
@@ -73,6 +75,14 @@ Route::prefix('api')->group(
         Route::post('/justificacionAusencia/store', [JustificacionAusenciaController::class, 'store']);
         Route::put('/justificacionAusencia/update/{id}', [JustificacionAusenciaController::class, 'update']);
         Route::delete('/justificacionAusencia/delete/{id}', [JustificacionAusenciaController::class, 'delete']);
+
+
+        // Justificacion de ausencia 
+        Route::get('/justificacionTardias', [JustificacionTardiaController::class, 'index']);
+        Route::get('/justificacionAusencia/show/{id}', [JustificacionTardiaController::class, 'show']);
+        Route::post('/justificacionAusencia/store', [JustificacionTardiaController::class, 'store']);
+        Route::put('/justificacionTardia/update/{id}', [JustificacionTardiaController::class, 'update']);
+        Route::delete('/justificacionAusencia/delete/{id}', [JustificacionTardiaController::class, 'delete']);
 
 
         // Solicitud de vacaciones

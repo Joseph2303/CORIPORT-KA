@@ -130,12 +130,11 @@ class JustificacionTardiaController extends Controller
             $rules = [
                 'fechaSolicitud' => 'required|date',
                 'fechaTardia' => 'required|date',
-                'archivo' => 'required',
+                //'archivo' => 'required',
                 'justificacion' => 'required',
                 'estado' => 'required',
                 'descripcion' => 'required',
                 'encargado' => 'required',
-                'idEmpleado' => 'required|integer',
             ];
 
             $valid = \validator($data, $rules);
