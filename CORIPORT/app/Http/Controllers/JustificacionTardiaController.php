@@ -75,7 +75,6 @@ class JustificacionTardiaController extends Controller
                     'estado' => 'required',
                     'descripcion' => 'required',
                     'encargado' => 'required|required|regex:/^[a-zA-Z\s]+$/',
-                    'idEmpleado' => 'required|integer'
                 ];
     
                 $valid = \validator($data, $rules);

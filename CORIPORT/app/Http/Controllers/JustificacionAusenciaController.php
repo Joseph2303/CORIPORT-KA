@@ -75,7 +75,6 @@ class JustificacionAusenciaController extends Controller
                     'estado' => 'required',
                     'descripcion' => 'required',
                     'encargado' => 'required|required|regex:/^[a-zA-Z\s]+$/',
-                    'idEmpleado' => 'required|integer'
                 ];
     
                 $valid = \validator($data, $rules);
@@ -135,7 +134,6 @@ class JustificacionAusenciaController extends Controller
                 'estado' => 'required',
                 'descripcion' => 'required',
                 'encargado' => 'required',
-                'idEmpleado' => 'required|integer',
             ];
 
             $valid = \validator($data, $rules);
