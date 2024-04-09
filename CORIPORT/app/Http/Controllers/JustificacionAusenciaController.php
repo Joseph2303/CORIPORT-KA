@@ -68,20 +68,28 @@ class JustificacionAusenciaController extends Controller
             if (!empty($data)) {
                 $data = array_map('trim', $data);
                 $rules = [
-                    'fechaSolicitud' => 'required|date',
                     'fechaAusencia' => 'required|date',
-                    'archivo' => 'required',
-                    'justificacion' => 'required',
-                    'estado' => 'required',
-                    'descripcion' => 'required',
-                    'encargado' => 'required|required|regex:/^[a-zA-Z\s]+$/',
+                    //'archivo' => 'required',
+                    'justificacion' => 'required|regex:/^[a-zA-Z\s]+$/',
+                    'estado' => 'required|regex:/^[a-zA-Z\s]+$/',
+                    'descripcion' => 'required|regex:/^[a-zA-Z\s]+$/',
+                    'encargado' => 'required|regex:/^[a-zA-Z\s]+$/',
                 ];
     
                 $valid = \validator($data, $rules);
     
                 if (!$valid->fails()) {
-                    $justificacionAusencia = JustificacionAusencia::create($data);
-    
+                    date_default_timezone_set('America/Costa_Rica');
+                    $justificacionAusencia = new JustificacionAusencia();
+                    $justificacionAusencia->fechaSolicitud = date('Y-m-d');;
+                    $justificacionAusencia->fechaAusencia =  $data['fechaAusencia'];
+                   // $justificacionAusencia->archivo =  $data['archivo'];
+                    $justificacionAusencia->justificacion = $data['justificacion'];
+                    $justificacionAusencia->estado = $data['estado'];
+                    $justificacionAusencia->descripcion = $data['descripcion'];
+                    $justificacionAusencia->encargado = $data['encargado'];
+                    $justificacionAusencia->save();
+                    
                     $response = [
                         'status' => 200,
                         'message' => 'Datos guardados exitosamente',
@@ -129,7 +137,7 @@ class JustificacionAusenciaController extends Controller
             $rules = [
                 'fechaSolicitud' => 'required|date',
                 'fechaAusencia' => 'required|date',
-                'archivo' => 'required',
+                //'archivo' => 'required',
                 'justificacion' => 'required',
                 'estado' => 'required',
                 'descripcion' => 'required',

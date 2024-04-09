@@ -73,8 +73,6 @@ class HorarioController extends Controller
 
     public function update($idEmpleado)
     {
-
-
         date_default_timezone_set('America/Costa_Rica');
         $horafin = date('H:i:s');
         $fecha = date('Y-m-d');

@@ -79,10 +79,10 @@ Route::prefix('api')->group(
 
         // Justificacion de ausencia 
         Route::get('/justificacionTardias', [JustificacionTardiaController::class, 'index']);
-        Route::get('/justificacionAusencia/show/{id}', [JustificacionTardiaController::class, 'show']);
-        Route::post('/justificacionAusencia/store', [JustificacionTardiaController::class, 'store']);
+        Route::get('/justificacionTardia/show/{id}', [JustificacionTardiaController::class, 'show']);
+        Route::post('/justificacionTardia/store', [JustificacionTardiaController::class, 'store']);
         Route::put('/justificacionTardia/update/{id}', [JustificacionTardiaController::class, 'update']);
-        Route::delete('/justificacionAusencia/delete/{id}', [JustificacionTardiaController::class, 'delete']);
+        Route::delete('/justificacionTardia/delete/{id}', [JustificacionTardiaController::class, 'delete']);
 
 
         // Solicitud de vacaciones
