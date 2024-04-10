@@ -39,4 +39,56 @@ class RegistroTardiaController extends Controller{
         // Devolver la respuesta en formato JSON
         return response()->json($response);
     }
+    public function update(Request $request, $id)
+    { {
+            $dataInput = $request->input('data', null);
+            $data = json_decode($dataInput, true);
+
+            if (empty($data)) {
+                $response = array(
+                    'status' => 400,
+                    'message' => 'Datos no proporcionados o incorrectos',
+                );
+            } else {
+                $rules = [
+                    'idJustificacionTardia' => 'required|int',
+                ];
+
+                $valid = \validator($data, $rules);
+
+                if ($valid->fails()) {
+                    $response = array(
+                        'status' => 406,
+                        'message' => 'Datos enviados no cumplen con las reglas establecidas',
+                        'errors' => $valid->errors(),
+                    );
+                } else {
+                    if (!empty($id)) {
+                        $registro = RegistroTardia::find($id);
+
+                        if ($registro) {
+                            $registro->update($data);
+
+                            $response = array(
+                                'status' => 200,
+                                'message' => 'Datos actualizados satisfactoriamente',
+                            );
+                        } else {
+                            $response = array(
+                                'status' => 400,
+                                'message' => 'El registro no existe',
+                            );
+                        }
+                    } else {
+                        $response = array(
+                            'status' => 400,
+                            'message' => 'El ID del registro no es válido',
+                        );
+                    }
+                }
+            }
+
+            return response()->json($response, $response['status']);
+        }
+    }
 }

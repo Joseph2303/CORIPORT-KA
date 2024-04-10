@@ -68,9 +68,8 @@ class JustificacionTardiaController extends Controller
             if (!empty($data)) {
                 $data = array_map('trim', $data);
                 $rules = [
-                    'fechaSolicitud' => 'required|date',
                     'fechaTardia' => 'required|date',
-                    'archivo' => 'required',
+                   // 'archivo' => 'required',
                     'justificacion' => 'required',
                     'estado' => 'required',
                     'descripcion' => 'required',
@@ -80,8 +79,18 @@ class JustificacionTardiaController extends Controller
                 $valid = \validator($data, $rules);
     
                 if (!$valid->fails()) {
-                    $justificacionTardia = JustificacionTardia::create($data);
-    
+                    date_default_timezone_set('America/Costa_Rica');
+
+                    $justificacionTardia =  new JustificacionTardia();
+                    $justificacionTardia->fechaSolicitud = date('Y-m-d');;
+                    $justificacionTardia->fechaTardia =  $data['fechaTardia'];
+                   // $justificacionTardia->archivo =  $data['archivo'];
+                    $justificacionTardia->justificacion = $data['justificacion'];
+                    $justificacionTardia->estado = $data['estado'];
+                    $justificacionTardia->descripcion = $data['descripcion'];
+                    $justificacionTardia->encargado = $data['encargado'];
+                    $justificacionTardia->save();
+
                     $response = [
                         'status' => 200,
                         'message' => 'Datos guardados exitosamente',

@@ -12,11 +12,11 @@ class RegistroTardia extends Model
 
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'registroTardia';
-    protected $primaryKey = 'idResgistroTardia'; 
+    protected $primaryKey = 'idRegistroTardia'; 
     public $timestamps = false; 
 
     protected $fillable = [
-        'idResgistroTardia',
+        'idRegistroTardia',
         'fecha',
         'hora',
         'idJustificacionTardia',
