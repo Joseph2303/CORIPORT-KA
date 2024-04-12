@@ -6,16 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\RegistroTardia;
 
 
-class RegistroTardiaController extends Controller{
-    public function __construct(){
-        $this->middleware('api.auth', ['except' => ['index','show', 'store', 'delete','update']]);
+class RegistroTardiaController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('api.auth', ['except' => ['getRegistrosTardiaPorEmpleado','index', 'show', 'store', 'delete', 'update']]);
     }
 
     public function index()
     {
         // Recuperar todas las justificaciones de ausencia
         $data = RegistroTardia::all();
-    
+
         // Verificar si se encontraron datos
         if ($data->isEmpty()) {
             $response = [
@@ -26,8 +28,8 @@ class RegistroTardiaController extends Controller{
         } else {
             // Cargar relaciones relacionadas con los registros de ausencia,
             // empleados, usuarios y puestos
-            $data->load('empleado','empleado.usuario', 'empleado.puesto', 'justificacionTardia');
-    
+            $data->load('empleado', 'empleado.usuario', 'empleado.puesto', 'justificacionTardia');
+
             // Preparar la respuesta
             $response = [
                 "status" => 200,
@@ -35,10 +37,36 @@ class RegistroTardiaController extends Controller{
                 "data" => $data,
             ];
         }
-    
+
         // Devolver la respuesta en formato JSON
         return response()->json($response);
     }
+
+    public function getRegistrosTardiaPorEmpleado($idEmpleado = null)
+    {
+        // Construir la consulta de registros de tardía
+        $query = RegistroTardia::query();
+
+        // Aplicar filtro si se proporciona un idEmpleado
+        if ($idEmpleado !== null) {
+            $query->where('idEmpleado', $idEmpleado);
+        }
+
+        // Obtener los registros de tardía con relaciones cargadas
+        $data = $query->with('empleado', 'empleado.usuario', 'empleado.puesto', 'justificacionTardia')->get();
+
+        // Preparar la respuesta
+        $response = [
+            "status" => $data->isEmpty() ? 404 : 200,
+            "message" => $data->isEmpty() ? "No se encontraron justificaciones de tardía" : "Consulta generada exitosamente",
+            "data" => $data,
+        ];
+
+        // Devolver la respuesta en formato JSON
+        return response()->json($response);
+    }
+
+
     public function update(Request $request, $id)
     { {
             $dataInput = $request->input('data', null);

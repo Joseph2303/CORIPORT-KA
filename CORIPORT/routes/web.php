@@ -98,6 +98,7 @@ Route::prefix('api')->group(
         Route::post('/registroAusencia/store', [RegistroAusenciaController::class, 'store']);
         Route::put('/registroAusencia/update/{id}', [RegistroAusenciaController::class, 'update']);
         Route::delete('/registroAusencia/delete/{id}', [RegistroAusenciaController::class, 'delete']);
+        Route::get('/registroAusencias/{id}', [RegistroAusenciaController::class, 'getRegistrosAusenciaPorEmpleado']);
 
         // Registro de tardias
         Route::get('/registroTardias', [RegistroTardiaController::class, 'index']);
@@ -105,6 +106,8 @@ Route::prefix('api')->group(
         Route::post('/registroTardia/store', [RegistroTardiaController::class, 'store']);
         Route::put('/registroTardia/update/{id}', [RegistroTardiaController::class, 'update']);
         Route::delete('/registroTardia/delete/{id}', [RegistroTardiaController::class, 'delete']);
+        Route::get('/registroTardias/{id}', [RegistroTardiaController::class, 'getRegistrosTardiaPorEmpleado']);
+
     }
 
 );

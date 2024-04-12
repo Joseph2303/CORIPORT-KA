@@ -9,7 +9,7 @@ class RegistroAusenciaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['index', 'show', 'store', 'delete', 'update']]);
+        $this->middleware('api.auth', ['except' => ['getRegistrosAusenciaPorEmpleado', 'index', 'show', 'store', 'delete', 'update']]);
     }
 
     public function index()
@@ -34,6 +34,30 @@ class RegistroAusenciaController extends Controller
                 "data" => $data,
             ];
         }
+
+        // Devolver la respuesta en formato JSON
+        return response()->json($response);
+    }
+
+    public function getRegistrosAusenciaPorEmpleado($idEmpleado = null)
+    {
+        // Construir la consulta de registros de tardía
+        $query = RegistroAusencia::query();
+
+        // Aplicar filtro si se proporciona un idEmpleado
+        if ($idEmpleado !== null) {
+            $query->where('idEmpleado', $idEmpleado);
+        }
+
+        // Obtener los registros de tardía con relaciones cargadas
+        $data = $query->with('empleado', 'empleado.usuario', 'empleado.puesto', 'justificacionAusencia')->get();
+
+        // Preparar la respuesta
+        $response = [
+            "status" => $data->isEmpty() ? 404 : 200,
+            "message" => $data->isEmpty() ? "No se encontraron justificaciones de tardía" : "Consulta generada exitosamente",
+            "data" => $data,
+        ];
 
         // Devolver la respuesta en formato JSON
         return response()->json($response);
