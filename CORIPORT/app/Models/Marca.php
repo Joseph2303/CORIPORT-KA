@@ -16,11 +16,16 @@ class Marca extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id',
-        'fechaHora', 'tipo', 'idHorario'
+        'idMarca',
+        'fecha', 'hora', 'tipo', 'idHorario', 'idEmpleado'
     ];
     public function horario()
     {
-        return $this->belongsTo('App\Models\Horario', 'idHorario', 'idMarca');
+        return $this->belongsTo('App\Models\Horario', 'idHorario');
+    }
+    // En el modelo Marca
+    public function empleado()
+    {
+        return $this->belongsTo('App\Models\Empleado', 'idEmpleado');
     }
 }

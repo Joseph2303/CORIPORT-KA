@@ -9,7 +9,7 @@ class soliVacacionesController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('api.auth', ['except' => ['index','show', 'store', 'delete','update']]);
+        $this->middleware('api.auth', ['except' => ['index','show', 'store', 'delete','update', 'getSolicitudVacacionesPorEmpleado']]);
     }
 
     public function __invoke()
@@ -19,19 +19,52 @@ class soliVacacionesController extends Controller
     public function index()
     {
         $data = solicitudVacaciones::all();
-        if ($data) {
-            $data = solicitudVacaciones::with('empleado', 'empleado.usuario', 'empleado.puesto')
-            ->get();       
+        
+        // Verificar si se encontraron datos
+        if ($data->isEmpty()) {
+            $response = [
+                "status" => 404,
+                "message" => "No se encontraron solicitudes de vacaciones",
+                "data" => [],
+            ];
+        } else {
+            $data->load('empleado', 'empleado.usuario', 'empleado.puesto');
+
+            $response = [
+                "status" => 200,
+                "message" => "Consulta generada exitosamente",
+                "data" => $data,
+            ];
         }
+    
+        return response()->json($response, $response['status']);
+    }
+    
+
+
+    public function getSolicitudVacacionesPorEmpleado($idEmpleado = null)
+    {
+        // Construir la consulta de registros de tardía
+        $query = solicitudVacaciones::query();
+
+        // Aplicar filtro si se proporciona un idEmpleado
+        if ($idEmpleado !== null) {
+            $query->where('idEmpleado', $idEmpleado);
+        }
+
+        // Obtener los registros de tardía con relaciones cargadas
+        $data = $query->with('empleado', 'empleado.usuario', 'empleado.puesto')->get();
+
+        // Preparar la respuesta
         $response = [
-            "status" => 200,
-            "message" => "Consulta generada exitosamente",
+            "status" => $data->isEmpty() ? 404 : 200,
+            "message" => $data->isEmpty() ? "No se encontraron solicitudes" : "Consulta generada exitosamente",
             "data" => $data,
         ];
 
-        return response()->json($response, 200);
+        // Devolver la respuesta en formato JSON
+        return response()->json($response);
     }
-
 
     public function store(Request $request)
     {

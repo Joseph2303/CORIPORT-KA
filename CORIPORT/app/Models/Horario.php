@@ -17,13 +17,16 @@ class Horario extends Model
 
     protected $fillable = [
         'idHorario',
-        'horaInicio', 
+        'horaInicio',
         'horaFin',
         'fecha',
-        'idEmpleado'
     ];
     public function empleado()
     {
-        return $this->belongsTo('App\Models\Empleado', 'idEmpleado', 'idEmpleado');
+        return $this->belongsTo('App\Models\Empleado', 'idEmpleado');
+    }
+    public function marcas()
+    {
+        return $this->hasMany('App\Models\Marca', 'idMarca');
     }
 }

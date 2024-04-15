@@ -14,14 +14,17 @@ class MarcaController extends Controller
 
     public function index()
     {
-        $data = Marca::all();
+        $data = Marca::with('horario', 'empleado', 'empleado.usuario', 'empleado.puesto')->get();
+
         $response = [
             "status" => 200,
             "message" => "Consulta generada exitosamente",
             "data" => $data,
         ];
+
         return response()->json($response, 200);
     }
+
 
     public function show($id)
     {
@@ -49,14 +52,14 @@ class MarcaController extends Controller
             if (!empty($data)) {
                 $data = array_map('trim', $data);
                 $rules = [
-                    'fechaHora' => 'required|datetime',   
-                    'tipo' => 'required',   
-                    'idHorario' => 'required|int'   
+                    'fechaHora' => 'required|datetime',
+                    'tipo' => 'required',
+                    'idHorario' => 'required|int'
                 ];
                 $valid = \validator($data, $rules);
 
                 if (!$valid->fails()) {
-                    $marca= new Marca();
+                    $marca = new Marca();
                     $marca->fechaHora = $data['fechaHora'];
                     $marca->tipo = $data['tipo'];
                     $marca->idHorario = $data['idHorario'];
@@ -81,7 +84,7 @@ class MarcaController extends Controller
             }
         } catch (\Exception $e) {
             $response = array(
-                'status' => 500, 
+                'status' => 500,
                 'message' => 'Error al guardar los datos',
                 'error' => $e->getMessage(),
             );
@@ -91,59 +94,58 @@ class MarcaController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-            {
-                $dataInput = $request->input('data', null);
-                $data = json_decode($dataInput, true);
-        
-                if (empty($data)) {
+    { {
+            $dataInput = $request->input('data', null);
+            $data = json_decode($dataInput, true);
+
+            if (empty($data)) {
+                $response = array(
+                    'status' => 400,
+                    'message' => 'Datos no proporcionados o incorrectos',
+                );
+            } else {
+                $rules = [
+                    'fechaHora' => 'required|datetime',
+                    'tipo' => 'required',
+                    'idHorario' => 'required|int'
+
+                ];
+
+                $valid = \validator($data, $rules);
+
+                if ($valid->fails()) {
                     $response = array(
-                        'status' => 400,
-                        'message' => 'Datos no proporcionados o incorrectos',
+                        'status' => 406,
+                        'message' => 'Datos enviados no cumplen con las reglas establecidas',
+                        'errors' => $valid->errors(),
                     );
                 } else {
-                    $rules = [
-                        'fechaHora' => 'required|datetime',   
-                        'tipo' => 'required',   
-                        'idHorario' => 'required|int'  
-                        
-                    ];
-        
-                    $valid = \validator($data, $rules);
-        
-                    if ($valid->fails()) {
-                        $response = array(
-                            'status' => 406,
-                            'message' => 'Datos enviados no cumplen con las reglas establecidas',
-                            'errors' => $valid->errors(),
-                        );
-                    } else {
-                        if (!empty($id)) {
-                            $marca = Marca::find($id);
-        
-                            if ($marca) {
-                                $marca->update($data);
-        
-                                $response = array(
-                                    'status' => 200,
-                                    'message' => 'Datos actualizados satisfactoriamente',
-                                );
-                            } else {
-                                $response = array(
-                                    'status' => 400,
-                                    'message' => 'La marca no existe',
-                                );
-                            }
+                    if (!empty($id)) {
+                        $marca = Marca::find($id);
+
+                        if ($marca) {
+                            $marca->update($data);
+
+                            $response = array(
+                                'status' => 200,
+                                'message' => 'Datos actualizados satisfactoriamente',
+                            );
                         } else {
                             $response = array(
                                 'status' => 400,
-                                'message' => 'El ID de la marca no es válido',
+                                'message' => 'La marca no existe',
                             );
                         }
+                    } else {
+                        $response = array(
+                            'status' => 400,
+                            'message' => 'El ID de la marca no es válido',
+                        );
                     }
                 }
-        
-                return response()->json($response, $response['status']);
+            }
+
+            return response()->json($response, $response['status']);
         }
     }
     public function delete($id)

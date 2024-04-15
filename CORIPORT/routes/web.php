@@ -7,6 +7,7 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\JustificacionAusenciaController;
 use App\Http\Controllers\JustificacionTardiaController;
+use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\RegistroAusenciaController;
 use App\Http\Controllers\RegistroTardiaController;
 use App\Http\Controllers\soliVacacionesController;
@@ -91,6 +92,7 @@ Route::prefix('api')->group(
         Route::post('/soliVacaciones/store', [soliVacacionesController::class, 'store']);
         Route::put('/soliVacaciones/update/{id}', [soliVacacionesController::class, 'update']);
         Route::delete('/soliVacaciones/delete/{id}', [soliVacacionesController::class, 'delete']);
+        Route::get('/soliVacaciones/{id}', [soliVacacionesController::class, 'getSolicitudVacacionesPorEmpleado']);
 
         // Registro de ausencias
         Route::get('/registroAusencias', [RegistroAusenciaController::class, 'index']);
@@ -108,6 +110,12 @@ Route::prefix('api')->group(
         Route::delete('/registroTardia/delete/{id}', [RegistroTardiaController::class, 'delete']);
         Route::get('/registroTardias/{id}', [RegistroTardiaController::class, 'getRegistrosTardiaPorEmpleado']);
 
+        // Registro de tardias
+        Route::get('/marcas', [MarcaController::class, 'index']);
+        Route::get('/marca/show/{id}', [MarcaController::class, 'show']);
+        Route::post('/marca/store', [MarcaController::class, 'store']);
+        Route::put('/marca/update/{id}', [MarcaController::class, 'update']);
+        Route::delete('/marca/delete/{id}', [MarcaController::class, 'delete']);
     }
 
 );
