@@ -13,15 +13,14 @@ class Vacaciones extends Model
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'vacaciones';
     protected $primaryKey = 'idVacaciones';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'idVacaciones',
         'periodo',
         'disponibles',
         'diasAsig',
-        'idEmpleado',
-
+        'idEmpleado'
     ];
 
     public function empleado(){
