@@ -11,6 +11,7 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\RegistroAusenciaController;
 use App\Http\Controllers\RegistroTardiaController;
 use App\Http\Controllers\soliVacacionesController;
+use App\Http\Controllers\VacacionesController;
 use App\Models\JustificacionTardia;
 use Illuminate\Support\Facades\Route;
 
@@ -110,12 +111,20 @@ Route::prefix('api')->group(
         Route::delete('/registroTardia/delete/{id}', [RegistroTardiaController::class, 'delete']);
         Route::get('/registroTardias/{id}', [RegistroTardiaController::class, 'getRegistrosTardiaPorEmpleado']);
 
-        // Registro de tardias
+        // Marcas
         Route::get('/marcas', [MarcaController::class, 'index']);
         Route::get('/marca/show/{id}', [MarcaController::class, 'show']);
         Route::post('/marca/store', [MarcaController::class, 'store']);
         Route::put('/marca/update/{id}', [MarcaController::class, 'update']);
         Route::delete('/marca/delete/{id}', [MarcaController::class, 'delete']);
+
+        // Vacaciones 
+        Route::get('/vacaciones', [VacacionesController::class, 'index']);
+        Route::get('/vacaciones/show/{id}', [VacacionesController::class, 'show']);
+        Route::post('/vacaciones/store', [VacacionesController::class, 'store']);
+        Route::put('/vacaciones/update/{id}', [VacacionesController::class, 'update']);
+        Route::delete('/vacaciones/delete/{id}', [VacacionesController::class, 'delete']);
+
     }
 
 );
