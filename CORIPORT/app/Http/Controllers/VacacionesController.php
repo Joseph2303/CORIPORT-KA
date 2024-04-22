@@ -9,20 +9,62 @@ class VacacionesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['index', 'show', 'store', 'update', 'delete']]);
+        $this->middleware('api.auth', ['except' => ['index', 'getVacacionesPorEmpleado', 'show', 'store', 'update', 'delete']]);
     }
 
     public function index()
     {
+        // Recuperar todas las justificaciones de ausencia
         $data = Vacaciones::all();
-        $response = [
-            "status" => 200,
-            "message" => "Consulta generada exitosamente",
-            "data" => $data,
-        ];
-        return response()->json($response, 200);
+    
+        // Verificar si se encontraron datos
+        if ($data->isEmpty()) {
+            $response = [
+                "status" => 404,
+                "message" => "No se encontraron vacaciones",
+                "data" => [],
+            ];
+        } else {
+            // Cargar relaciones relacionadas con los registros de ausencia,
+            // empleados, usuarios y puestos
+            $data->load('empleado');
+    
+            // Preparar la respuesta
+            $response = [
+                "status" => 200,
+                "message" => "Consulta generada exitosamente",
+                "data" => $data,
+            ];
+        }
+    
+        // Devolver la respuesta en formato JSON
+        return response()->json($response);
     }
 
+    public function getVacacionesPorEmpleado($idEmpleado = null)
+    {
+        // Construir la consulta de registros de vacaciones
+        $query = Vacaciones::query();
+    
+        // Aplicar filtro si se proporciona un idEmpleado
+        if ($idEmpleado !== null) {
+            $query->where('idEmpleado', $idEmpleado);
+        }
+    
+        // Obtener los resultados de la consulta
+        $data = $query->get();
+    
+        // Preparar la respuesta
+        $response = [
+            "status" => $data->isEmpty() ? 404 : 200,
+            "message" => $data->isEmpty() ? "No se encontraron vacaciones" : "Consulta generada exitosamente",
+            "data" => $data,
+        ];
+    
+        // Devolver la respuesta en formato JSON
+        return response()->json($response);
+    }
+    
     public function show($id)
     {
         $vacaciones = Vacaciones::find($id);

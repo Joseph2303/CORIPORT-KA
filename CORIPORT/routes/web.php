@@ -120,6 +120,7 @@ Route::prefix('api')->group(
 
         // Vacaciones 
         Route::get('/vacaciones', [VacacionesController::class, 'index']);
+        Route::get('/vacaciones/{id}', [VacacionesController::class, 'getVacacionesPorEmpleado']);
         Route::get('/vacaciones/show/{id}', [VacacionesController::class, 'show']);
         Route::post('/vacaciones/store', [VacacionesController::class, 'store']);
         Route::put('/vacaciones/update/{id}', [VacacionesController::class, 'update']);

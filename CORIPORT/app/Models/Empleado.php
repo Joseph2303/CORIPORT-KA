@@ -34,7 +34,7 @@ class Empleado extends Model
 
     public function puesto()
     {
-        return $this->belongsTo('App\Models\Puesto','idPuesto');
+        return $this->belongsTo('App\Models\Puesto', 'idPuesto');
     }
     public function horarios()
     {
@@ -42,10 +42,14 @@ class Empleado extends Model
     }
     public function soliVacaciones()
     {
-        return $this->hasMany('App\Models\soliVacaciones','idEmpleado');
+        return $this->hasMany('App\Models\soliVacaciones', 'idEmpleado');
     }
     public function registroAusencia()
     {
-        return $this->hasMany('App\Models\RegistroAusencia','idEmpleado');
+        return $this->hasMany('App\Models\RegistroAusencia', 'idEmpleado');
+    }
+    public function vacaciones()
+    {
+        return $this->hasMany('App\Models\Vacaciones', 'idEmpleado', 'idEmpleado');
     }
 }
