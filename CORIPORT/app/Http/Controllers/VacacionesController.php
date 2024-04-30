@@ -16,7 +16,7 @@ class VacacionesController extends Controller
     {
         // Recuperar todas las justificaciones de ausencia
         $data = Vacaciones::all();
-    
+
         // Verificar si se encontraron datos
         if ($data->isEmpty()) {
             $response = [
@@ -28,7 +28,7 @@ class VacacionesController extends Controller
             // Cargar relaciones relacionadas con los registros de ausencia,
             // empleados, usuarios y puestos
             $data->load('empleado');
-    
+
             // Preparar la respuesta
             $response = [
                 "status" => 200,
@@ -36,7 +36,7 @@ class VacacionesController extends Controller
                 "data" => $data,
             ];
         }
-    
+
         // Devolver la respuesta en formato JSON
         return response()->json($response);
     }
@@ -45,26 +45,26 @@ class VacacionesController extends Controller
     {
         // Construir la consulta de registros de vacaciones
         $query = Vacaciones::query();
-    
+
         // Aplicar filtro si se proporciona un idEmpleado
         if ($idEmpleado !== null) {
             $query->where('idEmpleado', $idEmpleado);
         }
-    
+
         // Obtener los resultados de la consulta
         $data = $query->get();
-    
+
         // Preparar la respuesta
         $response = [
             "status" => $data->isEmpty() ? 404 : 200,
             "message" => $data->isEmpty() ? "No se encontraron vacaciones" : "Consulta generada exitosamente",
             "data" => $data,
         ];
-    
+
         // Devolver la respuesta en formato JSON
         return response()->json($response);
     }
-    
+
     public function show($id)
     {
         $vacaciones = Vacaciones::find($id);
@@ -95,14 +95,14 @@ class VacacionesController extends Controller
                     'disponibles' => 'required',
                     'diasAsig' => 'required',
                     'idEmpleado' => 'required|integer'
-                    
+
                 ];
                 $valid = \validator($data, $rules);
 
                 if (!$valid->fails()) {
-                    $vacaciones= new Vacaciones();
+                    $vacaciones = new Vacaciones();
                     $vacaciones->vacacion = $data['vacaciones'];
-                   
+
                     $vacaciones->save();
                     $response = array(
                         'status' => 200,
@@ -134,61 +134,64 @@ class VacacionesController extends Controller
 
     public function update(Request $request, $id)
     {
-            {
-                $dataInput = $request->input('data', null);
-                $data = json_decode($dataInput, true);
-        
-                if (empty($data)) {
-                    $response = array(
-                        'status' => 400,
-                        'message' => 'Datos no proporcionados o incorrectos',
-                    );
-                } else {
-                    $rules = [
-                        'periodo' => 'required',
-                        'disponibles' => 'required',
-                        'diasAsig' => 'required',
-                        'idEmpleado' => 'required|integer'
-                        
-                    ];
-        
-                    $valid = \validator($data, $rules);
-        
-                    if ($valid->fails()) {
-                        $response = array(
-                            'status' => 406,
-                            'message' => 'Datos enviados no cumplen con las reglas establecidas',
-                            'errors' => $valid->errors(),
-                        );
-                    } else {
-                        if (!empty($id)) {
-                            $vacaciones = Vacaciones::find($id);
-        
-                            if ($vacaciones) {
-                                $vacaciones->update($data);
-        
-                                $response = array(
-                                    'status' => 200,
-                                    'message' => 'Datos actualizados satisfactoriamente',
-                                );
-                            } else {
-                                $response = array(
-                                    'status' => 400,
-                                    'message' => 'Las vacaciones no existen',
-                                );
-                            }
-                        } else {
-                            $response = array(
-                                'status' => 400,
-                                'message' => 'El ID de la vacacion no es válido',
-                            );
-                        }
-                    }
-                }
-        
-                return response()->json($response, $response['status']);
+        $dataInput = $request->input('data', null);
+        $data = json_decode($dataInput, true);
+    
+        if (empty($data)) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Datos no proporcionados o incorrectos',
+            ], 400);
         }
+    
+        $rules = [
+            'cantidadDias' => 'required|numeric',
+            'idEmpleado' => 'required|integer'
+        ];
+    
+        $valid = \validator($data, $rules);
+    
+        if ($valid->fails()) {
+            return response()->json([
+                'status' => 406,
+                'message' => 'Datos enviados no cumplen con las reglas establecidas',
+                'errors' => $valid->errors(),
+            ], 406);
+        }
+    
+        if (empty($id)) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'El ID no es válido',
+            ], 400);
+        }
+    
+        $periodoActual = now()->format('Y');
+    
+        $vacaciones = Vacaciones::where('idEmpleado', $data['idEmpleado'])
+                                ->where('periodo', $periodoActual)
+                                ->first();
+    
+        if (!$vacaciones) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No se encontraron vacaciones para el empleado y periodo actual',
+            ], 404);
+        }
+    
+        $diasDisponibles = $vacaciones->disponibles;
+        $cantDiasDisponibles = $diasDisponibles - $data['cantidadDias'];
+    
+        $vacaciones->disponibles = $cantDiasDisponibles;
+        $vacaciones->diasAsig = $data['cantidadDias'];
+        $vacaciones->save();
+    
+        return response()->json([
+            'status' => 200,
+            'message' => 'Datos actualizados satisfactoriamente',
+        ], 200);
     }
+    
     public function delete($id)
     {
         $vacacion = Vacaciones::find($id);
