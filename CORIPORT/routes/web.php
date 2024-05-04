@@ -92,6 +92,7 @@ Route::prefix('api')->group(
         Route::get('/soliVacaciones/show/{id}', [soliVacacionesController::class, 'show']);
         Route::post('/soliVacaciones/store', [soliVacacionesController::class, 'store']);
         Route::put('/soliVacaciones/update/{id}', [soliVacacionesController::class, 'update']);
+        Route::put('/soliVacaciones/{id}', [soliVacacionesController::class, 'updateEmpleado']);
         Route::delete('/soliVacaciones/delete/{id}', [soliVacacionesController::class, 'delete']);
         Route::get('/soliVacaciones/{id}', [soliVacacionesController::class, 'getSolicitudVacacionesPorEmpleado']);
 

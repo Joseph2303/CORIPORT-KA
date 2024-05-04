@@ -9,7 +9,7 @@ class soliVacacionesController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('api.auth', ['except' => ['index','show', 'store', 'delete','update', 'getSolicitudVacacionesPorEmpleado']]);
+        $this->middleware('api.auth', ['except' => ['updateEmpleado','index','show', 'store', 'delete','update', 'getSolicitudVacacionesPorEmpleado']]);
     }
 
     public function __invoke()
@@ -75,7 +75,7 @@ class soliVacacionesController extends Controller
             if (!empty($data)) {
                 $data = array_map('trim', $data);
                 $rules = [
-                    'fechSolicitud' => 'required|date',
+                    
                     'fechInicio' => 'required|date',
                     'fechFin' => 'required|date',
                     'estado' => 'required',
@@ -184,6 +184,58 @@ class soliVacacionesController extends Controller
         return response()->json($response, $response['status']);
     }
     
+    public function updateEmpleado(Request $request, $id)
+    {
+        $dataInput = $request->input('data', null);
+        $data = json_decode($dataInput, true);
+    
+        if (empty($data)) {
+            $response = array(
+                'status' => 400,
+                'message' => 'Datos no proporcionados o incorrectos',
+            );
+        } else {
+            $rules = [
+                'fechInicio' => 'required|date_format:Y-m-d',
+                'fechFin' => 'required|date_format:Y-m-d',
+            ];
+    
+            $valid = \validator($data, $rules);
+    
+            if ($valid->fails()) {
+                $response = array(
+                    'status' => 406,
+                    'message' => 'Datos enviados no cumplen con las reglas establecidas',
+                    'errors' => $valid->errors(),
+                );
+            } else {
+                if (!empty($id)) {
+                    $soliVacaciones = solicitudVacaciones::find($id);
+    
+                    if ($soliVacaciones) {
+                        $soliVacaciones->update($data);
+    
+                        $response = array(
+                            'status' => 200,
+                            'message' => 'Datos actualizados satisfactoriamente',
+                        );
+                    } else {
+                        $response = array(
+                            'status' => 400,
+                            'message' => 'La solicitud no existe',
+                        );
+                    }
+                } else {
+                    $response = array(
+                        'status' => 400,
+                        'message' => 'El ID de la solicitud no es válido',
+                    );
+                }
+            }
+        }
+    
+        return response()->json($response, $response['status']);
+    }
 
 
     public function delete($id)
