@@ -12,6 +12,8 @@ use App\Http\Controllers\RegistroAusenciaController;
 use App\Http\Controllers\RegistroTardiaController;
 use App\Http\Controllers\soliVacacionesController;
 use App\Http\Controllers\VacacionesController;
+use App\Http\Controllers\HorasExtraController;
+
 use App\Models\JustificacionTardia;
 use Illuminate\Support\Facades\Route;
 
@@ -127,6 +129,10 @@ Route::prefix('api')->group(
         Route::put('/vacaciones/update/{id}', [VacacionesController::class, 'update']);
         Route::delete('/vacaciones/delete/{id}', [VacacionesController::class, 'delete']);
 
+        // Horas Extra
+        Route::get('/horasExtra', [HorasExtraController::class, 'index']);
+        Route::get('/horasExtra/show/{id}', [HorasExtraController::class, 'show']);
+       
     }
 
 );
