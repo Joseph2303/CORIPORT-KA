@@ -21,10 +21,7 @@ class Horario extends Model
         'horaFin',
         'fecha',
     ];
-    public function empleado()
-    {
-        return $this->belongsTo('App\Models\Empleado', 'idEmpleado');
-    }
+
     public function marcas()
     {
         return $this->hasMany('App\Models\Marca', 'idMarca');
