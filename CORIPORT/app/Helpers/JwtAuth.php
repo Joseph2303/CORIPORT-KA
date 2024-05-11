@@ -16,7 +16,7 @@ class JWTAuth{
         $user = Usuario::where([
             'email' => $email,
             'contrasena' => hash('sha256', $contrasena)
-        ])->with('empleado')->first();
+        ])->with('empleado', 'empleado.puesto')->first();
 
         if(is_object($user)){
            
@@ -26,6 +26,7 @@ class JWTAuth{
                 'contrasena'=>$user->contrasena,
                 'tipoUsuario'=>$user->tipoUsuario,
                 'empleado' =>  $user->empleado,
+                'puesto' =>  $user->empleado->puesto,
                 'iat'=>time(),
                 'exp'=>time()+(2000)
             );
