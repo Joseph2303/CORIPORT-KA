@@ -52,17 +52,22 @@ class MarcaController extends Controller
             if (!empty($data)) {
                 $data = array_map('trim', $data);
                 $rules = [
-                    'fechaHora' => 'required|datetime',
                     'tipo' => 'required',
-                    'idHorario' => 'required|int'
+                    'idHorario' => 'required|int',
+                    'idEmpleado' => 'required|int',
+
                 ];
                 $valid = \validator($data, $rules);
 
                 if (!$valid->fails()) {
+                    date_default_timezone_set('America/Costa_Rica');
+
                     $marca = new Marca();
-                    $marca->fechaHora = $data['fechaHora'];
+                    $marca->fecha = date('Y-m-d');
+                    $marca->hora = now()->format('H:i:s');
                     $marca->tipo = $data['tipo'];
                     $marca->idHorario = $data['idHorario'];
+                    $marca->idEmpleado = $data['idEmpleado'];
 
                     $marca->save();
                     $response = array(
@@ -105,10 +110,9 @@ class MarcaController extends Controller
                 );
             } else {
                 $rules = [
-                    'fechaHora' => 'required|datetime',
                     'tipo' => 'required',
-                    'idHorario' => 'required|int'
-
+                    'idHorario' => 'required|int',
+                    'idEmpleado' => 'required|int',
                 ];
 
                 $valid = \validator($data, $rules);

@@ -64,6 +64,7 @@ Route::prefix('api')->group(
         Route::post('/horario/store', [HorarioController::class, 'store']);
         Route::put('/horario/update/{id}', [HorarioController::class, 'update']);
         Route::delete('/horario/delete', [HorarioController::class, 'delete']);
+        Route::get('/horarios/{id}', [HorarioController::class, 'getHorarioPorEmpleado']);
 
         // Puesto 
         Route::get('/puestos', [PuestoController::class, 'index']);

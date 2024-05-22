@@ -25,11 +25,11 @@ class EmpleadoController extends Controller
         return response()->json($response, 200);
     }
 
-    public function show($id)
+    public function show($cedula)
     {
-        $empleado = Empleado::find($id);
-        if (is_object($empleado)) {
-            $empleado->load('usuario', 'puesto');
+        $empleado = Empleado::where('cedula', $cedula)->first();
+        if ($empleado) {
+            $empleado->load('usuario', 'puesto','marcas.horario');
             $response = [
                 'status' => 200,
                 'data' => $empleado,
@@ -42,6 +42,7 @@ class EmpleadoController extends Controller
         }
         return response()->json($response, $response['status']);
     }
+    
 
     public function store(Request $request)
     {

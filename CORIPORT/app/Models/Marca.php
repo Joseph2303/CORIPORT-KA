@@ -23,7 +23,6 @@ class Marca extends Model
     {
         return $this->belongsTo('App\Models\Horario', 'idHorario');
     }
-    // En el modelo Marca
     public function empleado()
     {
         return $this->belongsTo('App\Models\Empleado', 'idEmpleado');
