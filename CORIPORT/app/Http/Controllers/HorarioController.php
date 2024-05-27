@@ -10,7 +10,7 @@ class HorarioController extends Controller
 
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => [ 'getHorarioPorEmpleado', 'index', 'show', 'store', 'delete', 'update']]);
+        $this->middleware('api.auth', ['except' => ['showByDate', 'getHorarioPorEmpleado', 'index', 'show', 'store', 'delete', 'update']]);
     }
 
     public function __invoke()
@@ -59,26 +59,26 @@ class HorarioController extends Controller
     {
 
 
-            if ($request) {
-                date_default_timezone_set('America/Costa_Rica');
+        if ($request) {
+            date_default_timezone_set('America/Costa_Rica');
 
-                $horario = new Horario();
-                $horario->horaInicio =  now()->format('H:i:s');
-                $horario->fecha = now();
-                $horario->save();
-                $response = array(
-                    'status' => 200,
-                    'message' => 'Datos guardados exitosamente',
-                    'data' => $horario
-                );
-            } else {
-                $response = array(
-                    'status' => 406,
-                    'message' => 'Error en la validación de los datos',
-                );
-            }
-            
-        
+            $horario = new Horario();
+            $horario->horaInicio =  now()->format('H:i:s');
+            $horario->fecha = now();
+            $horario->save();
+            $response = array(
+                'status' => 200,
+                'message' => 'Datos guardados exitosamente',
+                'data' => $horario
+            );
+        } else {
+            $response = array(
+                'status' => 406,
+                'message' => 'Error en la validación de los datos',
+            );
+        }
+
+
         return response()->json($response, $response['status']);
     }
 
@@ -183,4 +183,30 @@ class HorarioController extends Controller
         }
         return response()->json($response, $response['status']);
     }
+
+
+    public function showByDate()
+    {
+        date_default_timezone_set('America/Costa_Rica');
+        $fecha = date('Y-m-d');
+
+        $horario = Horario::where('fecha', $fecha)->get();
+
+        if ($horario->isEmpty()) {
+            $response = [
+                'status' => 404,
+                'message' => 'Horario no encontrado',
+            ];
+        } else {
+            $response = [
+                'status' => 200,
+                'message' => 'Consulta generada exitosamente',
+                'data' => $horario,
+            ];
+        }
+
+        return response()->json($response, $response['status']);
+    }
+
+
 }

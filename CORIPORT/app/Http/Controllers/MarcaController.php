@@ -9,7 +9,7 @@ class MarcaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['index', 'show', 'store', 'update', 'delete']]);
+        $this->middleware('api.auth', ['except' => ['index', 'showByDate', 'store', 'update', 'delete']]);
     }
 
     public function index()
@@ -26,22 +26,30 @@ class MarcaController extends Controller
     }
 
 
-    public function show($id)
+    public function showByDate()
     {
-        $marca = Marca::find($id);
-        if (is_object($marca)) {
+        date_default_timezone_set('America/Costa_Rica');
+        $fecha = date('Y-m-d');
+        $tipo = 'Salida';
+    
+        $marca = Marca::where('fecha', $fecha)->where('tipo', $tipo)->get();
+    
+        if ($marca->isEmpty()) {
             $response = [
-                'status' => 200,
-                'data' => $marca
+                'status' => 404,
+                'message' => 'Marca no encontrada',
             ];
         } else {
             $response = [
-                'status' => 404,
-                'message' => 'Marca no encontrado',
+                'status' => 200,
+                'message' => 'Consulta generada exitosamente',
+                'data' => $marca
             ];
         }
+    
         return response()->json($response, $response['status']);
     }
+    
 
     public function store(Request $request)
     {
@@ -170,4 +178,5 @@ class MarcaController extends Controller
 
         return response()->json($response, $response['status']);
     }
+    
 }

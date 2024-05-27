@@ -61,6 +61,7 @@ Route::prefix('api')->group(
         //Route horario
         Route::get('/horarios', [HorarioController::class, 'index']);
         Route::get('/horario/show/{id}', [HorarioController::class, 'show']);
+        Route::get('/horario/showByDate', [HorarioController::class, 'showByDate']);
         Route::post('/horario/store', [HorarioController::class, 'store']);
         Route::put('/horario/update/{id}', [HorarioController::class, 'update']);
         Route::delete('/horario/delete', [HorarioController::class, 'delete']);
@@ -121,6 +122,7 @@ Route::prefix('api')->group(
         Route::post('/marca/store', [MarcaController::class, 'store']);
         Route::put('/marca/update/{id}', [MarcaController::class, 'update']);
         Route::delete('/marca/delete/{id}', [MarcaController::class, 'delete']);
+        Route::get('/marca/showByDate', [MarcaController::class, 'showByDate']);
 
         // Vacaciones 
         Route::get('/vacaciones', [VacacionesController::class, 'index']);
