@@ -42,9 +42,6 @@ class FaceIdController extends Controller
                     'descriptor' => json_decode($faceId->descriptor, true) // Asegúrate de decodificar el descriptor si está en formato JSON
                 ];
     
-                // Codificar los datos como UTF-8
-                $data = array_map('utf8_encode', $data);
-    
                 return response()->json([
                     'status' => 200,
                     'message' => 'Datos y imagen recuperados exitosamente',
