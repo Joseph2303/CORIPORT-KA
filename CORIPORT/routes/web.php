@@ -3,6 +3,7 @@
 use App\Http\Controllers\DiasFeriadosController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\FaceIdController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\JustificacionAusenciaController;
@@ -136,6 +137,9 @@ Route::prefix('api')->group(
         Route::get('/horasExtra', [HorasExtraController::class, 'index']);
         Route::get('/horasExtra/show/{id}', [HorasExtraController::class, 'show']);
        
+        //face id
+        Route::get('/faceId/store', [FaceIdController::class, 'store']);
+
     }
 
 );
