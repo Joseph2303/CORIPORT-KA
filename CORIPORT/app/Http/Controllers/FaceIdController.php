@@ -75,9 +75,10 @@ class FaceIdController extends Controller
     
                     // Crear una nueva instancia de FaceId y guardar en la base de datos
                     $faceId = new FaceId();
+                    $faceId->imageData = $filename;
+                    $faceId->descriptor = json_encode($data['descriptor']);
                     $faceId->idEmpleado = $data['idEmpleado'];
-                    $faceId->imageData = $filename; // Guardar el nombre del archivo en lugar de la imagen directamente
-                    $faceId->descriptor = $data['descriptor'];
+
                     $faceId->save();
     
                     $response = [
