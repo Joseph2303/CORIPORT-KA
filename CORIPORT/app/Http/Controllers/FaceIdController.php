@@ -34,8 +34,6 @@ class FaceIdController extends Controller
         if ($faceId) {
             $filename = $faceId->imageData;
             $exist = \Storage::disk('users')->exists($filename);
-            dd($filename);
-            dd($exist);
             if ($exist) {
                 $file = \Storage::disk('users')->get($filename);
                 $data = [
@@ -52,7 +50,8 @@ class FaceIdController extends Controller
             } else {
                 return response()->json([
                     'status' => 404,
-                    'message' => 'La imagen no existe en el servidor'
+                    'message' => 'La imagen no existe en el servidor',
+                    'exits' => $exist,
                 ]);
             }
         } else {
