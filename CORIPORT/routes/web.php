@@ -138,7 +138,7 @@ Route::prefix('api')->group(
         Route::get('/horasExtra/show/{id}', [HorasExtraController::class, 'show']);
        
         //face id
-        Route::get('/faceId/store', [FaceIdController::class, 'store']);
+        Route::post('/faceId/store', [FaceIdController::class, 'store']);
 
     }
 
