@@ -36,14 +36,19 @@ class FaceIdController extends Controller
             $exist = \Storage::disk('users')->exists($filename);
             if ($exist) {
                 $file = \Storage::disk('users')->get($filename);
+                $data = [
+                    'idEmpleado' => $faceId->idEmpleado,
+                    'imageData' => $file, // Devuelve la imagen en forma de datos binarios
+                    'descriptor' => json_decode($faceId->descriptor, true) // Asegúrate de decodificar el descriptor si está en formato JSON
+                ];
+    
+                // Codificar los datos como UTF-8
+                $data = array_map('utf8_encode', $data);
+    
                 return response()->json([
                     'status' => 200,
                     'message' => 'Datos y imagen recuperados exitosamente',
-                    'data' => [
-                        'idEmpleado' => $faceId->idEmpleado,
-                        'imageData' => $file, // Devuelve la imagen en forma de datos binarios
-                        'descriptor' => json_decode($faceId->descriptor, true) // Asegúrate de decodificar el descriptor si está en formato JSON
-                    ]
+                    'data' => $data
                 ]);
             } else {
                 return response()->json([
@@ -58,6 +63,7 @@ class FaceIdController extends Controller
             ]);
         }
     }
+    
 
 
     public function store(Request $request)
