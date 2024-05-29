@@ -10,7 +10,7 @@ class FaceIdController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['index', 'store', 'update', 'delete']]);
+        $this->middleware('api.auth', ['except' => ['getDataById', 'index', 'store', 'update', 'delete']]);
     }
 
     public function index()
@@ -27,30 +27,38 @@ class FaceIdController extends Controller
     }
 
 
-    public function showByDate()
+    public function getDataById($idEmpleado)
     {
-        date_default_timezone_set('America/Costa_Rica');
-        $fecha = date('Y-m-d');
-        $tipo = 'Salida';
+        $faceId = FaceId::where('idEmpleado', $idEmpleado)->first();
     
-        $marca = Marca::where('fecha', $fecha)->where('tipo', $tipo)->get();
-    
-        if ($marca->isEmpty()) {
-            $response = [
-                'status' => 404,
-                'message' => 'Marca no encontrada',
-            ];
+        if ($faceId) {
+            $filename = $faceId->imageData;
+            $exist = \Storage::disk('users')->exists($filename);
+            if ($exist) {
+                $file = \Storage::disk('users')->get($filename);
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Datos y imagen recuperados exitosamente',
+                    'data' => [
+                        'idEmpleado' => $faceId->idEmpleado,
+                        'imageData' => $file, // Devuelve la imagen en forma de datos binarios
+                        'descriptor' => json_decode($faceId->descriptor, true) // Asegúrate de decodificar el descriptor si está en formato JSON
+                    ]
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'La imagen no existe en el servidor'
+                ]);
+            }
         } else {
-            $response = [
-                'status' => 200,
-                'message' => 'Consulta generada exitosamente',
-                'data' => $marca
-            ];
+            return response()->json([
+                'status' => 404,
+                'message' => 'No se encontraron datos para el ID proporcionado'
+            ]);
         }
-    
-        return response()->json($response, $response['status']);
     }
-    
+
 
     public function store(Request $request)
     {

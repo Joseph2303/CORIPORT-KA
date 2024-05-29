@@ -139,6 +139,7 @@ Route::prefix('api')->group(
        
         //face id
         Route::post('/faceId/store', [FaceIdController::class, 'store']);
+        Route::get('/faceId/{id}', [FaceIdController::class, 'getDataById']);
 
     }
 
