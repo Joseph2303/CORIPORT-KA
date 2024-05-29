@@ -81,9 +81,10 @@ class FaceIdController extends Controller
                 if (!$validator->fails()) {
                     // Obtener y guardar la imagen
                     $imageData = $data['imageData'];
+                    dd($imageData);
                     $filename = \Str::uuid() . '.png'; // Nombre de archivo único
                     \Storage::disk('users')->put($filename, base64_decode($imageData));
-    
+                    dd($filename);
                     // Crear una nueva instancia de FaceId y guardar en la base de datos
                     $faceId = new FaceId();
                     $faceId->imageData = $filename;
