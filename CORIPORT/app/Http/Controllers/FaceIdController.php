@@ -34,11 +34,13 @@ class FaceIdController extends Controller
         if ($faceId) {
             $filename = $faceId->imageData;
             $exist = \Storage::disk('users')->exists($filename);
+            dd($filename);
+            dd($exist);
             if ($exist) {
                 $file = \Storage::disk('users')->get($filename);
                 $data = [
                     'idEmpleado' => $faceId->idEmpleado,
-                    'imageData' => mb_convert_encoding($file, 'UTF-8', 'UTF-8'), // Devuelve la imagen en forma de datos binarios
+                    'imageData' => $file, // Devuelve la imagen en forma de datos binarios
                     'descriptor' => json_decode($faceId->descriptor, true) // Asegúrate de decodificar el descriptor si está en formato JSON
                 ];
     
