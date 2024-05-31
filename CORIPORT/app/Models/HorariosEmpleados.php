@@ -24,7 +24,7 @@ class HorariosEmpleados extends Model{
     ];
 
     public function empleado(){
-        return $this->hasMany('App\Models\Empleado', 'id');
+        return $this->hasMany('App\Models\Empleado', 'Empleado');
     }
 
 }

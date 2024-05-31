@@ -82,7 +82,7 @@ class HorariosEmpleadosController extends Controller{
         return response()->json($response, $response['status']); 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $Id)
     {
         $dataInput = $request->input('data', null);
         $data = json_decode($dataInput, true);
@@ -110,8 +110,8 @@ class HorariosEmpleadosController extends Controller{
                     'errors' => $valid->errors(),
                 );
             } else {
-                if (!empty($id)) {
-                    $horariosEmpleados = HorariosEmpleados::find($id);
+                if (!empty($Id)) {
+                    $horariosEmpleados = HorariosEmpleados::find($Id);
     
                     if ($horariosEmpleados) {
                         $horariosEmpleados->update($data);
