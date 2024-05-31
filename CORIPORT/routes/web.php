@@ -14,6 +14,7 @@ use App\Http\Controllers\RegistroTardiaController;
 use App\Http\Controllers\soliVacacionesController;
 use App\Http\Controllers\VacacionesController;
 use App\Http\Controllers\HorasExtraController;
+use App\Http\Controllers\HorariosEmpleadosController;
 
 use App\Models\JustificacionTardia;
 use Illuminate\Support\Facades\Route;
@@ -140,6 +141,13 @@ Route::prefix('api')->group(
         //face id
         Route::post('/faceId/store', [FaceIdController::class, 'store']);
         Route::get('/faceId/{id}', [FaceIdController::class, 'getDataById']);
+
+        //Horarios Empleado
+        Route::get('/horarioEmpleado', [HorariosEmpleadosController::class, 'index']);
+        Route::get('/horarioEmpleado/show/{id}', [HorariosEmpleadosController::class, 'show']);
+        Route::post('/horarioEmpleado/store', [HorariosEmpleadosController::class, 'store']);
+        Route::put('/horarioEmpleado/update/{id}', [HorariosEmpleadosController::class, 'update']);
+        Route::delete('/horarioEmpleado/delete/{id}', [HorariosEmpleadosController::class, 'delete']);
 
     }
 
