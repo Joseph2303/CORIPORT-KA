@@ -29,19 +29,18 @@ class FaceIdController extends Controller
 
     public function getDataById($idEmpleado)
     {
-        $faceId = FaceId::where('idEmpleado', $idEmpleado)->first();
-    
-        if ($faceId) {
-            $filename = $faceId->imageData;
-            $exist = \Storage::disk('users')->exists($filename);
-            if ($exist) {
-                $file = \Storage::disk('users')->get($filename);
+        try {
+
+            $faceId = FaceId::where('idEmpleado', $idEmpleado)->first();
+
+            if ($faceId) {
+
                 $data = [
                     'idEmpleado' => $faceId->idEmpleado,
-                    'imageData' => $file, // Devuelve la imagen en forma de datos binarios
-                    'descriptor' => json_decode($faceId->descriptor, true) // Asegúrate de decodificar el descriptor si está en formato JSON
+                    'imageData' => $faceId->imageData, 
+                    'descriptor' => json_decode($faceId->descriptor, true) 
                 ];
-    
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Datos y imagen recuperados exitosamente',
@@ -50,18 +49,19 @@ class FaceIdController extends Controller
             } else {
                 return response()->json([
                     'status' => 404,
-                    'message' => 'La imagen no existe en el servidor',
-                    'exits' => $exist,
+                    'message' => 'No se encontraron datos para el ID proporcionado'
                 ]);
             }
-        } else {
+        } catch (\Exception $e) {
+
             return response()->json([
-                'status' => 404,
-                'message' => 'No se encontraron datos para el ID proporcionado'
+                'status' => 500,
+                'message' => 'Error al recuperar los datos',
+                'error' => $e->getMessage()
             ]);
         }
     }
-    
+
 
 
     public function store(Request $request)
@@ -69,7 +69,7 @@ class FaceIdController extends Controller
         try {
             $dataInput = $request->input('data', null);
             $data = json_decode($dataInput, true);
-    
+
             if (!empty($data)) {
                 // Validar los datos
                 $rules = [
@@ -78,22 +78,20 @@ class FaceIdController extends Controller
                     'descriptor' => 'required|array'
                 ];
                 $validator = \Validator::make($data, $rules);
-    
+
                 if (!$validator->fails()) {
-                    // Obtener y guardar la imagen
+                    // Obtener y decodificar la imagen
                     $imageData = $data['imageData'];
-                    dd($imageData);
-                    $filename = \Str::uuid() . '.png'; // Nombre de archivo único
-                    \Storage::disk('users')->put($filename, base64_decode($imageData));
-                    dd($filename);
+                    // $imageDecoded = base64_decode($imageData);
+
                     // Crear una nueva instancia de FaceId y guardar en la base de datos
                     $faceId = new FaceId();
-                    $faceId->imageData = $filename;
+                    $faceId->imageData = $imageData; // Guardar la imagen decodificada directamente
                     $faceId->descriptor = json_encode($data['descriptor']);
                     $faceId->idEmpleado = $data['idEmpleado'];
 
                     $faceId->save();
-    
+
                     $response = [
                         'status' => 200,
                         'message' => 'Datos guardados exitosamente'
@@ -118,10 +116,11 @@ class FaceIdController extends Controller
                 'error' => $e->getMessage()
             ];
         }
-    
+
         return response()->json($response, $response['status']);
     }
-    
+
+
 
     public function uploadImage(Request $request)
     {
@@ -242,5 +241,4 @@ class FaceIdController extends Controller
 
         return response()->json($response, $response['status']);
     }
-    
 }
