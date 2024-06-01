@@ -8,7 +8,7 @@ use App\Models\Empleado;
 class EmpleadoController extends Controller
 {
     public function __construct(){
-        $this->middleware('api.auth', ['except' => ['index','show', 'store', 'delete','update']]);
+        $this->middleware('api.auth', ['except' => [ 'getEmpleado','index','show', 'store', 'delete','update']]);
     }
 
     public function index()
@@ -43,6 +43,23 @@ class EmpleadoController extends Controller
         return response()->json($response, $response['status']);
     }
     
+    public function getEmpleado($idEmpleado)
+    {
+        $empleado = Empleado::where('idEmpleado', $idEmpleado)->first();
+        if ($empleado) {
+            $empleado->load('usuario', 'puesto','marcas.horario');
+            $response = [
+                'status' => 200,
+                'data' => $empleado,
+            ];
+        } else {
+            $response = [
+                'status' => 404,
+                'message' => 'Empleado no encontrado',
+            ];
+        }
+        return response()->json($response, $response['status']);
+    }
 
     public function store(Request $request)
     {
