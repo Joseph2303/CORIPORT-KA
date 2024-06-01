@@ -49,6 +49,7 @@ Route::prefix('api')->group(
         //Router Empleado
         Route::get('/empleados', [EmpleadoController::class, 'index']);
         Route::get('/empleado/show/{id}', [EmpleadoController::class, 'show']);
+        Route::get('/empleado/getEmpleado/{id}', [EmpleadoController::class, 'getEmpleado']);
         Route::post('/empleado/store', [EmpleadoController::class, 'store']);
         Route::put('/empleado/update/{id}', [EmpleadoController::class, 'update']);
         Route::delete('/empleado/delete/{id}', [EmpleadoController::class, 'delete']);
