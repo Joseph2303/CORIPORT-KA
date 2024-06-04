@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FaceId;
-use App\Models\Marca;
 
 class FaceIdController extends Controller
 {
@@ -15,7 +14,7 @@ class FaceIdController extends Controller
 
     public function index()
     {
-        $data = Marca::with('horario', 'empleado', 'empleado.usuario', 'empleado.puesto')->get();
+        $data = FaceId::with('empleado', 'empleado.usuario', 'empleado.puesto')->get();
 
         $response = [
             "status" => 200,
@@ -196,7 +195,7 @@ class FaceIdController extends Controller
                     );
                 } else {
                     if (!empty($id)) {
-                        $marca = Marca::find($id);
+                        $marca = FaceId::find($id);
 
                         if ($marca) {
                             $marca->update($data);
@@ -225,12 +224,12 @@ class FaceIdController extends Controller
     }
     public function delete($id)
     {
-        $marca = Marca::find($id);
+        $marca = FaceId::find($id);
         if ($marca) {
             $marca->delete();
             $response = [
                 'status' => 200,
-                'message' => 'Marca eliminada correctamente',
+                'message' => 'FaceId eliminada correctamente',
             ];
         } else {
             $response = [

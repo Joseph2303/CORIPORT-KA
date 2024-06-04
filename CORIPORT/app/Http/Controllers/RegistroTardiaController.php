@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RegistroTardia;
-
+use Illuminate\Support\Facades\DB;
 
 class RegistroTardiaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['getRegistrosTardiaPorEmpleado','index', 'show', 'store', 'delete', 'update']]);
+        $this->middleware('api.auth', ['except' => ['getRegistrosTardiaPorEmpleado','index', 'show', 'store', 'delete', 'update','registrosTardiaEmpleado']]);
     }
 
     public function index()
@@ -119,4 +119,28 @@ class RegistroTardiaController extends Controller
             return response()->json($response, $response['status']);
         }
     }
+
+    public function registrosTardiaEmpleado(Request $request)
+    {
+        $idEmpleado = $request->input('idEmpleado');
+        $idMarca = $request->input('idMarca');
+
+        try {
+            DB::statement('EXEC RegistrarTardia ?, ?', [$idEmpleado, $idMarca]);
+            $response = [
+                'status' => 200,
+                'message' => 'Registro de tardía realizado correctamente',
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'status' => 500,
+                'message' => 'Error al registrar tardía',
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($response, $response['status']);
+    }
+
+
 }

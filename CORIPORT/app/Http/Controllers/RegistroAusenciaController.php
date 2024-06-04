@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\RegistroAusencia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegistroAusenciaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['getRegistrosAusenciaPorEmpleado', 'index', 'show', 'store', 'delete', 'update']]);
+        $this->middleware('api.auth', ['except' => ['getRegistrosAusenciaPorEmpleado', 'index', 'show', 'store', 'delete', 'update','registroAusenciasEmpleado']]);
     }
 
     public function index()
@@ -200,4 +201,27 @@ class RegistroAusenciaController extends Controller
 
         return response()->json($response, $response['status']);
     }
+
+    public function registroAusenciasEmpleado(Request $request)
+    {
+        $idEmpleado = $request->input('idEmpleado');
+        $idMarca = $request->input('idMarca');
+
+        try {
+            DB::statement('EXEC RegistrarAusencia ?, ?', [$idEmpleado, $idMarca]);
+            $response = [
+                'status' => 200,
+                'message' => 'Registro de ausencia realizado correctamente',
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'status' => 500,
+                'message' => 'Error al registrar ausencia',
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($response, $response['status']);
+    }
+
 }

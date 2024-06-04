@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\HorasExtra;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 class HorasExtraController extends Controller
 {
     public function __construct()

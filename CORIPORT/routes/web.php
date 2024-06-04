@@ -110,6 +110,9 @@ Route::prefix('api')->group(
         Route::put('/registroAusencia/update/{id}', [RegistroAusenciaController::class, 'update']);
         Route::delete('/registroAusencia/delete/{id}', [RegistroAusenciaController::class, 'delete']);
         Route::get('/registroAusencias/{id}', [RegistroAusenciaController::class, 'getRegistrosAusenciaPorEmpleado']);
+        Route::post('/registroAusenciasEmpleado/show/{id}', [RegistroAusenciaController::class, 'registrosAusenciaEmpleado']);
+  
+
 
         // Registro de tardias
         Route::get('/registroTardias', [RegistroTardiaController::class, 'index']);
@@ -118,6 +121,8 @@ Route::prefix('api')->group(
         Route::put('/registroTardia/update/{id}', [RegistroTardiaController::class, 'update']);
         Route::delete('/registroTardia/delete/{id}', [RegistroTardiaController::class, 'delete']);
         Route::get('/registroTardias/{id}', [RegistroTardiaController::class, 'getRegistrosTardiaPorEmpleado']);
+        Route::post('/registroTardiasEmpleado/show/{id}', [RegistroTardiaController::class, 'registrosTardiaEmpleado']);
+
 
         // Marcas
         Route::get('/marcas', [MarcaController::class, 'index']);
@@ -139,11 +144,14 @@ Route::prefix('api')->group(
         Route::get('/horasExtra', [HorasExtraController::class, 'index']);
         Route::get('/horasExtra/show/{id}', [HorasExtraController::class, 'show']);
         Route::post('/horasExtra/show/{id}', [HorasExtraController::class, 'calcularHorasExtra']);
-
+            
        
         //face id
         Route::post('/faceId/store', [FaceIdController::class, 'store']);
         Route::get('/faceId/{id}', [FaceIdController::class, 'getDataById']);
+        Route::get('/faceId', [FaceIdController::class, 'index']);
+        Route::get('/faceId/delete', [FaceIdController::class, 'delete']);
+
 
         //Horarios Empleado
         Route::get('/horarioEmpleado', [HorariosEmpleadosController::class, 'index']);
@@ -151,6 +159,7 @@ Route::prefix('api')->group(
         Route::post('/horarioEmpleado/store', [HorariosEmpleadosController::class, 'store']);
         Route::put('/horarioEmpleado/update/{id}', [HorariosEmpleadosController::class, 'update']);
         Route::delete('/horarioEmpleado/delete/{id}', [HorariosEmpleadosController::class, 'delete']);
+
 
     }
 
