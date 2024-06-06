@@ -21,7 +21,7 @@ class Marca extends Model
     ];
     public function horario()
     {
-        return $this->belongsTo('App\Models\Horario', 'idHorario');
+        return $this->belongsTo('App\Models\Horario', 'idHorario', 'idHorario');
     }
     public function empleado()
     {

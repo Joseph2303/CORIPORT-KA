@@ -21,7 +21,7 @@ class HorarioController extends Controller
     {
         $data = Horario::all();
         if ($data) {
-            $data->load('marcas');
+            $data->load('marcas', 'marcas.empleado', 'marcas.empleado.usuario', 'marcas.empleado.puesto');
         }
         $response = array(
             "status" => 200,
