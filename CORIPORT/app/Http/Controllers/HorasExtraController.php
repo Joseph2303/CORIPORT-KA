@@ -11,7 +11,7 @@ class HorasExtraController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['index', 'show','calcularHorasExtra']]);
+        $this->middleware('api.auth', ['except' => ['index', 'show','calculateHorasExtras']]);
     }
     public function __invoke()
     {
@@ -47,27 +47,25 @@ class HorasExtraController extends Controller
         return response()->json($response, $response['status']);
     }
 
-    public function calculateHorasExtras(Request $request)
-    {
-        $idEmpleado = $request->input('idEmpleado');
-        $idMarca = $request->input('idMarca');
-
+    public function calculateHorasExtras()    {
         try {
-            DB::statement('EXEC CalcularHorasExtras ?, ?', [$idEmpleado, $idMarca]);
+            DB::statement('EXEC paCalcularHorasExtras');
+
             $response = [
                 'status' => 200,
-                'message' => 'Horas extras calculadas correctamente',
+                'message' => 'Horas calculadas correctamente',
             ];
         } catch (\Exception $e) {
             $response = [
                 'status' => 500,
-                'message' => 'Error al calcular horas extras',
+                'message' => 'Error al ejecutar el procedimiento almacenado',
                 'error' => $e->getMessage(),
             ];
         }
 
         return response()->json($response, $response['status']);
     }
+
 }
 
 

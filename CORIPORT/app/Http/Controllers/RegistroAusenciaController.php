@@ -202,13 +202,11 @@ class RegistroAusenciaController extends Controller
         return response()->json($response, $response['status']);
     }
 
-    public function registroAusenciasEmpleado(Request $request)
+    public function registroAusenciasEmpleado()
     {
-        $idEmpleado = $request->input('idEmpleado');
-        $idMarca = $request->input('idMarca');
-
+        
         try {
-            DB::statement('EXEC RegistrarAusencia ?, ?', [$idEmpleado, $idMarca]);
+            DB::statement('EXEC paRegistrarAusencia');
             $response = [
                 'status' => 200,
                 'message' => 'Registro de ausencia realizado correctamente',

@@ -110,7 +110,7 @@ Route::prefix('api')->group(
         Route::put('/registroAusencia/update/{id}', [RegistroAusenciaController::class, 'update']);
         Route::delete('/registroAusencia/delete/{id}', [RegistroAusenciaController::class, 'delete']);
         Route::get('/registroAusencias/{id}', [RegistroAusenciaController::class, 'getRegistrosAusenciaPorEmpleado']);
-        Route::post('/registroAusenciasEmpleado/show/{id}', [RegistroAusenciaController::class, 'registrosAusenciaEmpleado']);
+        Route::get('/registroAusenciasEmpleado/show', [RegistroAusenciaController::class, 'registrosAusenciaEmpleado']);
   
 
 
@@ -121,7 +121,7 @@ Route::prefix('api')->group(
         Route::put('/registroTardia/update/{id}', [RegistroTardiaController::class, 'update']);
         Route::delete('/registroTardia/delete/{id}', [RegistroTardiaController::class, 'delete']);
         Route::get('/registroTardias/{id}', [RegistroTardiaController::class, 'getRegistrosTardiaPorEmpleado']);
-        Route::post('/registroTardiasEmpleado/show/{id}', [RegistroTardiaController::class, 'registrosTardiaEmpleado']);
+        Route::post('/registroTardiasEmpleado/show', [RegistroTardiaController::class, 'registrosTardiaEmpleado']);
 
 
         // Marcas
@@ -131,6 +131,8 @@ Route::prefix('api')->group(
         Route::put('/marca/update/{id}', [MarcaController::class, 'update']);
         Route::delete('/marca/delete/{id}', [MarcaController::class, 'delete']);
         Route::get('/marca/showByDate', [MarcaController::class, 'showByDate']);
+        Route::get('/marca/showSalida', [MarcaController::class, 'showSalida']);
+
 
         // Vacaciones 
         Route::get('/vacaciones', [VacacionesController::class, 'index']);
@@ -143,7 +145,7 @@ Route::prefix('api')->group(
         // Horas Extra
         Route::get('/horasExtra', [HorasExtraController::class, 'index']);
         Route::get('/horasExtra/show/{id}', [HorasExtraController::class, 'show']);
-        Route::post('/horasExtra/show/{id}', [HorasExtraController::class, 'calcularHorasExtra']);
+        Route::get('/horasExtras/show', [HorasExtraController::class, 'calculateHorasExtras']);
             
        
         //face id

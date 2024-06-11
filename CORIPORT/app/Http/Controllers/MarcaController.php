@@ -9,7 +9,7 @@ class MarcaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['index', 'showByDate', 'store', 'update', 'delete']]);
+        $this->middleware('api.auth', ['except' => ['index', 'showSalida','showByDate', 'store', 'update', 'delete']]);
     }
 
     public function index()
@@ -25,6 +25,30 @@ class MarcaController extends Controller
         return response()->json($response, 200);
     }
 
+    public function showSalida(){
+        date_default_timezone_set('America/Costa_Rica');
+        $fecha = date('Y-m-d');
+        $tipo = 'salida';
+
+        $marca = Marca::where('fecha', $fecha)
+                    ->where('tipo', $tipo)
+                    ->pluck('idMarca');
+
+        if ($marca->isEmpty()) {
+            $response = [
+                'status' => 404,
+                'message' => 'Marca no encontrada',
+            ];
+        } else {
+            $response = [
+                'status' => 200,
+                'message' => 'Consulta generada exitosamente',
+                'data' => $marca
+            ];
+        }
+
+        return response()->json($response, $response['status']);
+    }
 
     public function showByDate()
     {

@@ -120,13 +120,11 @@ class RegistroTardiaController extends Controller
         }
     }
 
-    public function registrosTardiaEmpleado(Request $request)
+    public function registrosTardiaEmpleado()
     {
-        $idEmpleado = $request->input('idEmpleado');
-        $idMarca = $request->input('idMarca');
-
+       
         try {
-            DB::statement('EXEC RegistrarTardia ?, ?', [$idEmpleado, $idMarca]);
+            DB::statement('EXEC paRegistrarTardia');
             $response = [
                 'status' => 200,
                 'message' => 'Registro de tardía realizado correctamente',
