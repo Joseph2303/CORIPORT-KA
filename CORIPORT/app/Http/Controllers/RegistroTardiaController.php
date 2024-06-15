@@ -122,13 +122,20 @@ class RegistroTardiaController extends Controller
 
     public function registrosTardiaEmpleado()
     {
-       
         try {
-            DB::statement('EXEC paRegistrarTardia');
-            $response = [
-                'status' => 200,
-                'message' => 'Registro de tardía realizado correctamente',
-            ];
+
+            $result = DB::select('EXEC paRegistrarTardia');
+            if ($result) {
+                $response = [
+                    'status' => 200,
+                    'message' => 'Registro de tardía realizado correctamente',
+                ];
+            } else {
+                $response = [
+                    'status' => 400,
+                    'message' => 'Error al registrar tardía',
+                ];
+            }
         } catch (\Exception $e) {
             $response = [
                 'status' => 500,

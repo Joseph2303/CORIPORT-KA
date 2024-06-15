@@ -124,6 +124,7 @@ Route::prefix('api')->group(
         Route::post('/registroTardiasEmpleado/show', [RegistroTardiaController::class, 'registrosTardiaEmpleado']);
 
 
+
         // Marcas
         Route::get('/marcas', [MarcaController::class, 'index']);
         Route::get('/marca/show/{id}', [MarcaController::class, 'show']);
