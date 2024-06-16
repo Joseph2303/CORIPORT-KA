@@ -191,7 +191,9 @@ class HorarioController extends Controller
         $fecha = date('Y-m-d');
 
         $horario = Horario::where('fecha', $fecha)->get();
-
+        if ($horario) {
+            $horario->load('marcas', 'marcas.empleado');
+        }
         if ($horario->isEmpty()) {
             $response = [
                 'status' => 404,

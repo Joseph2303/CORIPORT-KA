@@ -57,7 +57,9 @@ class MarcaController extends Controller
         $tipo = 'Salida';
     
         $marca = Marca::where('fecha', $fecha)->where('tipo', $tipo)->get();
-    
+        if ($marca) {
+            $marca->load('empleado');
+        }
         if ($marca->isEmpty()) {
             $response = [
                 'status' => 404,
