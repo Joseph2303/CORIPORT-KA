@@ -96,7 +96,7 @@ Route::prefix('api')->group(
 
         // Solicitud de vacaciones
         Route::get('/soliVacaciones', [soliVacacionesController::class, 'index']);
-        Route::get('/soliVacaciones/show/{id}', [soliVacacionesController::class, 'show']);
+        Route::get('/soliVacaciones/showByEmpleado/{id}', [soliVacacionesController::class, 'showByEmpleado']);
         Route::post('/soliVacaciones/store', [soliVacacionesController::class, 'store']);
         Route::put('/soliVacaciones/update/{id}', [soliVacacionesController::class, 'update']);
         Route::put('/soliVacaciones/{id}', [soliVacacionesController::class, 'updateEmpleado']);
@@ -131,8 +131,10 @@ Route::prefix('api')->group(
         Route::post('/marca/store', [MarcaController::class, 'store']);
         Route::put('/marca/update/{id}', [MarcaController::class, 'update']);
         Route::delete('/marca/delete/{id}', [MarcaController::class, 'delete']);
+        Route::delete('/marca/deleteByEmpleado/{id}', [MarcaController::class, 'delete']);
         Route::get('/marca/showByDate', [MarcaController::class, 'showByDate']);
         Route::get('/marca/showSalida', [MarcaController::class, 'showSalida']);
+        Route::get('/marca/showByEmpleado/{id}', [MarcaController::class, 'showByEmpleado']);
 
 
         // Vacaciones 
@@ -147,18 +149,19 @@ Route::prefix('api')->group(
         Route::get('/horasExtra', [HorasExtraController::class, 'index']);
         Route::get('/horasExtra/show/{id}', [HorasExtraController::class, 'show']);
         Route::get('/horasExtras/show', [HorasExtraController::class, 'calculateHorasExtras']);
-            
+        Route::get('/horasExtra/showByEmpleado/{id}', [HorasExtraController::class, 'showByEmpleado']);
+
        
         //face id
         Route::post('/faceId/store', [FaceIdController::class, 'store']);
         Route::get('/faceId/{id}', [FaceIdController::class, 'getDataById']);
         Route::get('/faceId', [FaceIdController::class, 'index']);
-        Route::get('/faceId/delete', [FaceIdController::class, 'delete']);
+        Route::delete('/faceId/delete/{id}', [FaceIdController::class, 'delete']);
 
 
         //Horarios Empleado
         Route::get('/horarioEmpleado', [HorariosEmpleadosController::class, 'index']);
-        Route::get('/horarioEmpleado/show/{id}', [HorariosEmpleadosController::class, 'show']);
+        Route::get('/horarioEmpleado/showByEmpleado/{id}', [HorariosEmpleadosController::class, 'showByEmpleado']);
         Route::post('/horarioEmpleado/store', [HorariosEmpleadosController::class, 'store']);
         Route::put('/horarioEmpleado/update/{id}', [HorariosEmpleadosController::class, 'update']);
         Route::delete('/horarioEmpleado/delete/{id}', [HorariosEmpleadosController::class, 'delete']);

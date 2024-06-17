@@ -9,7 +9,7 @@ class MarcaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['index', 'showSalida','showByDate', 'store', 'update', 'delete']]);
+        $this->middleware('api.auth', ['except' => [ 'showByEmpleado', 'index', 'showSalida', 'showByDate', 'store', 'update', 'delete']]);
     }
 
     public function index()
@@ -25,14 +25,15 @@ class MarcaController extends Controller
         return response()->json($response, 200);
     }
 
-    public function showSalida(){
+    public function showSalida()
+    {
         date_default_timezone_set('America/Costa_Rica');
         $fecha = date('Y-m-d');
         $tipo = 'salida';
 
         $marca = Marca::where('fecha', $fecha)
-                    ->where('tipo', $tipo)
-                    ->pluck('idMarca');
+            ->where('tipo', $tipo)
+            ->pluck('idMarca');
 
         if ($marca->isEmpty()) {
             $response = [
@@ -55,7 +56,7 @@ class MarcaController extends Controller
         date_default_timezone_set('America/Costa_Rica');
         $fecha = date('Y-m-d');
         $tipo = 'Salida';
-    
+
         $marca = Marca::where('fecha', $fecha)->where('tipo', $tipo)->get();
         if ($marca) {
             $marca->load('empleado');
@@ -72,10 +73,10 @@ class MarcaController extends Controller
                 'data' => $marca
             ];
         }
-    
+
         return response()->json($response, $response['status']);
     }
-    
+
 
     public function store(Request $request)
     {
@@ -204,5 +205,19 @@ class MarcaController extends Controller
 
         return response()->json($response, $response['status']);
     }
-    
+
+    public function showByEmpleado($idEmpleado)
+    {
+        $marcas = Marca::where('idEmpleado', $idEmpleado)->with('horario')->get();
+
+        $horarios = $marcas->pluck('horario');
+
+        $response = [
+            "status" => 200,
+            "message" => "Consulta generada exitosamente",
+            "data" => $horarios,
+        ];
+
+        return response()->json($response, 200);
+    }
 }

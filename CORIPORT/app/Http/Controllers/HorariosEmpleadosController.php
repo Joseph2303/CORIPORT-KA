@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class HorariosEmpleadosController extends Controller{
     public function __construct(){
-        $this->middleware('api.auth', ['except' => ['index','show', 'store', 'delete','update']]);
+        $this->middleware('api.auth', ['except' => ['index','showByEmpleado', 'store', 'delete','update']]);
     }
 
     public function __invoke()
@@ -164,20 +164,34 @@ class HorariosEmpleadosController extends Controller{
     }
 
     
-    public function show($id)
+    public function showByEmpleado($id)
     {
-        $horariosEmpleados = HorariosEmpleados::find($id);
-        if (is_object($horariosEmpleados)) {
+        try {
+            // Buscar los horarios del empleado por su ID
+            $horariosEmpleados = HorariosEmpleados::where('Empleado', $id)->first();
+    
+            if ($horariosEmpleados) {
+                // Si se encuentra el horario, retornar respuesta exitosa
+                $response = [
+                    'status' => 200,
+                    'data' => $horariosEmpleados,
+                ];
+            } else {
+                // Si no se encuentra el horario, retornar error 404
+                $response = [
+                    'status' => 404,
+                    'message' => 'El horario no se encuentra para el empleado con ID: ' . $id,
+                ];
+            }
+        } catch (\Exception $e) {
+            // Capturar cualquier excepción que pueda ocurrir
             $response = [
-                'status' => 200,
-                'data' => $horariosEmpleados,
-            ];
-        } else {
-            $response = [
-                'status' => 404,
-                'message' => 'El horario no se encuentra',
+                'status' => 500,
+                'message' => 'Error al buscar el horario: ' . $e->getMessage(),
             ];
         }
+    
+        // Retornar la respuesta en formato JSON
         return response()->json($response, $response['status']);
     }
 

@@ -26,4 +26,8 @@ class Horario extends Model
     {
         return $this->hasMany('App\Models\Marca', 'idHorario', 'idHorario');
     }
+    public function horasExtra()
+    {
+        return $this->hasMany('App\Models\HorasExtra', 'idHorario', 'idHorario');
+    }
 }

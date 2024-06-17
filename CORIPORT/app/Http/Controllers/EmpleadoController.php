@@ -7,8 +7,9 @@ use App\Models\Empleado;
 
 class EmpleadoController extends Controller
 {
-    public function __construct(){
-        $this->middleware('api.auth', ['except' => [ 'getEmpleado','index','show', 'store', 'delete','update']]);
+    public function __construct()
+    {
+        $this->middleware('api.auth', ['except' => ['getEmpleado', 'index', 'show', 'store', 'delete', 'update']]);
     }
 
     public function index()
@@ -29,7 +30,7 @@ class EmpleadoController extends Controller
     {
         $empleado = Empleado::where('cedula', $cedula)->first();
         if ($empleado) {
-            $empleado->load('usuario', 'puesto','marcas.horario');
+            $empleado->load('usuario', 'puesto', 'marcas.horario');
             $response = [
                 'status' => 200,
                 'data' => $empleado,
@@ -42,12 +43,12 @@ class EmpleadoController extends Controller
         }
         return response()->json($response, $response['status']);
     }
-    
+
     public function getEmpleado($idEmpleado)
     {
         $empleado = Empleado::where('idEmpleado', $idEmpleado)->first();
         if ($empleado) {
-            $empleado->load('usuario', 'puesto','marcas.horario');
+            $empleado->load('usuario', 'puesto', 'marcas.horario');
             $response = [
                 'status' => 200,
                 'data' => $empleado,
@@ -129,7 +130,7 @@ class EmpleadoController extends Controller
                 'errors' => $valid->errors(),
             ];
         } else {
-            
+
             $empleado = Empleado::find($id);
             if ($empleado) {
                 $empleado->nombre = $data['nombre'];
@@ -157,20 +158,61 @@ class EmpleadoController extends Controller
         return response()->json($response, $response['status']);
     }
 
-    public function delete($id)
+    public function delete($idEmpleado)
     {
-        if (isset($id)) {
-            $empleado = Empleado::find($id);
+        if (isset($idEmpleado)) {
+            // Encontrar el empleado por id
+            $empleado = Empleado::find($idEmpleado);
+
             if ($empleado) {
+                $empleado->faceId()->delete();
+
+                $empleado->horariosEmpleados()->delete();
+
+                foreach ($empleado->marcas as $marca) {
+                    if ($marca->horario) {
+                        $marca->horario->horasExtra()->delete();
+                    }
+                    $marca->delete();
+                }
+
+                foreach ($empleado->marcas as $marca) {
+                    if ($marca->horario) {
+                        $marca->horario()->delete();
+                    }
+                }
+
+                $empleado->vacaciones()->delete();
+
+                $empleado->soliVacaciones()->delete();
+
+                foreach ($empleado->registroAusencia as $registro) {
+                    $registro->delete();
+                }
+
+                foreach ($empleado->registroAusencia as $registro) {
+                    $registro->justificacionAusencia()->delete();
+                }
+
+                foreach ($empleado->registroTardia as $registro) {
+                    $registro->delete();
+                }
+
+                foreach ($empleado->registroAusencia as $registro) {
+                    $registro->justificacionTardia()->delete();
+                }
+
+                // Finalmente, eliminar el empleado
                 $empleado->delete();
+
                 $response = [
                     'status' => 200,
-                    'message' => 'Empleado eliminado correctamente',
+                    'message' => 'Empleado y todas las relaciones asociadas eliminadas correctamente',
                 ];
             } else {
                 $response = [
-                    'status' => 400,
-                    'message' => 'No se pudo eliminar el recurso',
+                    'status' => 404,
+                    'message' => 'No se pudo encontrar el empleado, puede ser que no exista',
                 ];
             }
         } else {

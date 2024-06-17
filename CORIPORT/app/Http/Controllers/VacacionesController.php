@@ -159,18 +159,14 @@ class VacacionesController extends Controller
             ], 406);
         }
     
-        if (empty($id)) {
+        if (!$id) {
             return response()->json([
                 'status' => 400,
                 'message' => 'El ID no es válido',
             ], 400);
         }
     
-        $periodoActual = now()->format('Y');
-    
-        $vacaciones = Vacaciones::where('idEmpleado', $data['idEmpleado'])
-                                ->where('periodo', $periodoActual)
-                                ->first();
+        $vacaciones = Vacaciones::where('idEmpleado', $data['idEmpleado'])->first();
     
         if (!$vacaciones) {
             return response()->json([
@@ -191,6 +187,7 @@ class VacacionesController extends Controller
             'message' => 'Datos actualizados satisfactoriamente',
         ], 200);
     }
+    
     
     public function delete($id)
     {

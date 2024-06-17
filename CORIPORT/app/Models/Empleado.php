@@ -42,14 +42,27 @@ class Empleado extends Model
     }
     public function soliVacaciones()
     {
-        return $this->hasMany('App\Models\soliVacaciones', 'idEmpleado');
+        return $this->hasMany('App\Models\solicitudVacaciones', 'idEmpleado');
     }
     public function registroAusencia()
     {
-        return $this->hasMany('App\Models\RegistroAusencia', 'idEmpleado');
+        return $this->hasMany('App\Models\RegistroAusencia', 'idEmpleado', 'idEmpleado');
     }
+    public function registroTardia()
+    {
+        return $this->hasMany('App\Models\RegistroTardia', 'idEmpleado', 'idEmpleado');
+    }
+
     public function vacaciones()
     {
         return $this->hasMany('App\Models\Vacaciones', 'idEmpleado', 'idEmpleado');
+    }
+    public function horariosEmpleados()
+    {
+        return $this->hasOne('App\Models\HorariosEmpleados', 'Empleado', 'idEmpleado');
+    }
+    public function faceId()
+    {
+        return $this->hasOne('App\Models\FaceId', 'idEmpleado', 'idEmpleado');
     }
 }

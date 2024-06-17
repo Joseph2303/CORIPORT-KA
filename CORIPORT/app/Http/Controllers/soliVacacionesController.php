@@ -9,7 +9,7 @@ class soliVacacionesController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('api.auth', ['except' => ['updateEmpleado','index','show', 'store', 'delete','update', 'getSolicitudVacacionesPorEmpleado']]);
+        $this->middleware('api.auth', ['except' => ['updateEmpleado','index','showByEmpleado', 'store', 'delete','update', 'getSolicitudVacacionesPorEmpleado']]);
     }
 
     public function __invoke()
@@ -262,22 +262,25 @@ class soliVacacionesController extends Controller
         return response()->json($response, $response['status']);
     }
 
-    public function show($id)
+    public function showByEmpleado($idEmpleado)
     {
-        $solicitud = solicitudVacaciones::find($id);
-        if (is_object($solicitud)) {
+        $solicitudes = solicitudVacaciones::where('idEmpleado', $idEmpleado)->get();
+    
+        if ($solicitudes->isEmpty()) {
             $response = [
-                'status' => 200,
-                'message' => 'Consulta generada exitosamente',
-                'data' => $solicitud,
+                'status' => 404,
+                'message' => 'No se encontraron solicitudes de vacaciones para este empleado',
             ];
         } else {
             $response = [
-                'status' => 404,
-                'message' => 'Solicitud de vacaciones no encontrado',
+                'status' => 200,
+                'message' => 'Solicitudes de vacaciones encontradas',
+                'data' => $solicitudes,
             ];
         }
+    
         return response()->json($response, $response['status']);
     }
+       
 
 }
